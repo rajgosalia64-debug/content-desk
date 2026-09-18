@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content Desk</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f5f4f9; --surface:#ffffff; --soft:#efedf5; --line:#e2dfec; --line2:#d3cfe0;
+  --ink:#1c1929; --ink2:#575268; --ink3:#8b869c;
+  --side:#1f1a30; --side2:#2a2440; --side-ink:#ece9f6; --side-ink2:#a39cbb;
+  --accent:#6a4be0;
+  --ok:#157a44; --ok-bg:#e1f4e8; --warn:#9a6508; --warn-bg:#fdf0d3; --bad:#c42f2a; --bad-bg:#fbe3e1;
+  --info:#1b67a8; --info-bg:#e0edf9; --vio:#6a45cc; --vio-bg:#ece5fb; --mute:#6f6a80; --mute-bg:#eceaf1;
+  --fd:'Bricolage Grotesque','Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --fb:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --shadow:0 1px 0 rgba(28,25,41,.04),0 10px 30px -18px rgba(28,25,41,.35);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#141220; --surface:#1c1929; --soft:#252136; --line:#302b44; --line2:#3d3754;
+  --ink:#f0eef7; --ink2:#b9b3cc; --ink3:#857f99; --side:#0f0d18; --side2:#1d1a2b;
+  --ok:#5fd694; --ok-bg:#15311f; --warn:#f0bd5a; --warn-bg:#382a0e; --bad:#ff8a80; --bad-bg:#3d1b1b;
+  --info:#7cbcf5; --info-bg:#132a3e; --vio:#b9a2ff; --vio-bg:#2a2146; --mute:#aaa5bb; --mute-bg:#2a2638;
+  --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -18px rgba(0,0,0,.8); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#141220; --surface:#1c1929; --soft:#252136; --line:#302b44; --line2:#3d3754;
+  --ink:#f0eef7; --ink2:#b9b3cc; --ink3:#857f99; --side:#0f0d18; --side2:#1d1a2b;
+  --ok:#5fd694; --ok-bg:#15311f; --warn:#f0bd5a; --warn-bg:#382a0e; --bad:#ff8a80; --bad-bg:#3d1b1b;
+  --info:#7cbcf5; --info-bg:#132a3e; --vio:#b9a2ff; --vio-bg:#2a2146; --mute:#aaa5bb; --mute-bg:#2a2638;
+  --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -18px rgba(0,0,0,.8); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font:15px/1.5 var(--fb);-webkit-font-smoothing:antialiased}
+img,video{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--fd);margin:0;letter-spacing:-.015em}
+.ic{flex:none;vertical-align:-3px}
+.muted{color:var(--ink3)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.side{background:var(--side);color:var(--side-ink);padding:22px 16px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:22px;overflow-y:auto}
+.brand{display:flex;gap:10px;align-items:center;padding:0 6px}
+.brand .logo{width:34px;height:34px;border-radius:10px;background:var(--accent);display:grid;place-items:center;font:800 17px var(--fd);color:#fff;transition:background .3s}
+.brand b{font:700 17px var(--fd);display:block;letter-spacing:-.01em}
+.brand small{color:var(--side-ink2);font-size:12px}
+.accts{display:flex;flex-direction:column;gap:3px}
+.accts .lbl{font-size:12px;color:var(--side-ink2);padding:0 10px 4px}
+.accts button{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;font-weight:600;font-size:14.5px;color:var(--side-ink2)}
+.accts button i{width:10px;height:10px;border-radius:50%;flex:none}
+.accts button:hover{background:var(--side2);color:var(--side-ink)}
+.accts button.on{background:var(--side2);color:#fff;box-shadow:inset 3px 0 0 var(--accent)}
+.accts button:focus-visible{outline:2px solid var(--accent)}
+nav.nav{display:flex;flex-direction:column;gap:2px}
+nav.nav button{all:unset;cursor:pointer;display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;color:var(--side-ink2);font-weight:500}
+nav.nav button:hover{color:var(--side-ink);background:var(--side2)}
+nav.nav button.on{color:#fff;background:color-mix(in srgb,var(--accent) 32%,transparent)}
+nav.nav button:focus-visible{outline:2px solid var(--accent)}
+nav.nav .badge{margin-left:auto;background:var(--accent);color:#fff;border-radius:99px;font-size:11.5px;font-weight:700;padding:1px 7px}
+.me{margin-top:auto;border-top:1px solid var(--side2);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.me .who{display:flex;align-items:center;gap:10px;padding:0 6px}
+.av{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.me .who b{display:block;font-size:14px}
+.me .who small{color:var(--side-ink2);font-size:12px}
+.me .tools{display:flex;gap:4px}
+.me .tools button{all:unset;cursor:pointer;padding:7px;border-radius:8px;color:var(--side-ink2);display:grid;place-items:center}
+.me .tools button:hover{background:var(--side2);color:#fff}
+.sync{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--side-ink2);padding:0 6px}
+.sync i{width:8px;height:8px;border-radius:50%;background:#46c67c;box-shadow:0 0 0 3px rgba(70,198,124,.2)}
+.sync.local i{background:#f0bd5a;box-shadow:0 0 0 3px rgba(240,189,90,.2)}
+.sync.err i{background:#ff6b61}
+
+.main{padding:30px 38px 60px;min-width:0;max-width:1380px;width:100%}
+.localbar{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:10px 14px;margin-bottom:20px;font-size:14px}
+.vh{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.vh h1{font-size:clamp(28px,3.4vw,40px);font-weight:800;line-height:1.05}
+.vh .sub{margin:8px 0 0;color:var(--ink2);max-width:62ch}
+.vh-act{display:flex;gap:8px;flex-wrap:wrap}
+.back{all:unset;cursor:pointer;color:var(--ink2);font-weight:600;font-size:14px;display:inline-flex;gap:4px;align-items:center;margin-bottom:10px}
+.back:hover{color:var(--ink)}
+
+/* ---------- controls ---------- */
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line2);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:9px;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;text-decoration:none;line-height:1.3}
+.btn:hover{border-color:var(--ink3)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn.warn{background:var(--warn-bg);border-color:transparent;color:var(--warn)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--ink2)}
+.btn.ghost:hover{background:var(--soft);color:var(--ink)}
+.btn.danger:hover{color:var(--bad)}
+.btn.sm{padding:5px 10px;font-size:13px;border-radius:8px;gap:5px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.linkbtn{all:unset;cursor:pointer;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.seg{display:inline-flex;background:var(--soft);border-radius:10px;padding:3px;gap:2px}
+.seg button{all:unset;cursor:pointer;padding:6px 12px;border-radius:8px;font-weight:600;font-size:13.5px;color:var(--ink2)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg button:focus-visible{outline:2px solid var(--accent)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.toolbar .grow{flex:1}
+input[type=text],input[type=search],input[type=password],input[type=number],input[type=date],input[type=time],input[type=url],input[type=tel],select,textarea{width:100%;border:1px solid var(--line2);background:var(--surface);border-radius:8px;padding:8px 11px;font-size:14.5px}
+textarea{resize:vertical;line-height:1.5}
+.toolbar select,.toolbar input{width:auto}
+.toolbar input[type=search]{min-width:220px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent)}
+
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:2px 9px;font-size:12.5px;font-weight:600;white-space:nowrap;background:var(--mute-bg);color:var(--mute)}
+.s-pending,.s-review,.s-planning{background:var(--warn-bg);color:var(--warn)}
+.s-ready,.s-confirmed,.s-editing{background:var(--info-bg);color:var(--info)}
+.s-scheduled,.s-shot{background:var(--vio-bg);color:var(--vio)}
+.s-uploaded,.s-approved,.s-delivered,.s-ok{background:var(--ok-bg);color:var(--ok)}
+.s-hold{background:var(--mute-bg);color:var(--mute)}
+.s-over,.s-rejected,.s-late,.s-bad{background:var(--bad-bg);color:var(--bad)}
+.s-changes,.s-risk{background:var(--warn-bg);color:var(--warn)}
+.s-none{background:var(--mute-bg);color:var(--mute)}
+.handle{font-weight:700;color:var(--ac,var(--accent))}
+.tag{font-size:12.5px;font-weight:600;border:1px solid var(--line2);border-radius:6px;padding:0 6px;color:var(--ink2)}
+
+/* ---------- panels ---------- */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);min-width:0}
+.ph{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px}
+.ph h2{font-size:19px;font-weight:700}
+.ph .hint{color:var(--ink3);font-size:13px}
+.count{background:var(--soft);border-radius:99px;padding:1px 9px;font-size:13px;font-weight:700;color:var(--ink2)}
+.empty{color:var(--ink3);margin:6px 0;font-size:14px}
+.emptybig{text-align:center;padding:50px 20px;border:1.5px dashed var(--line2);border-radius:14px;color:var(--ink2)}
+.emptybig h3{font-size:20px;margin-bottom:6px;color:var(--ink)}
+.emptybig p{margin:0 0 14px}
+
+/* ---------- home ---------- */
+.today-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-bottom:18px}
+.tcol{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);border-top:4px solid var(--ac)}
+.tch{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.tch b{font:700 20px var(--fd);color:var(--ac)}
+.tch span{font-size:13px;color:var(--ink3)}
+.trow{display:grid;grid-template-columns:52px 74px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.trow .tm{font-weight:700;font-variant-numeric:tabular-nums}
+.trow .tc{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink2)}
+.home-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
+.span2{grid-column:span 2}
+.cov{width:100%;border-collapse:separate;border-spacing:4px;font-size:13px}
+.cov th{font-weight:600;color:var(--ink3);text-align:center;padding:2px}
+.cov th.acc{text-align:left;color:var(--ink);white-space:nowrap}
+.cov th.td{color:var(--accent)}
+.cov td{text-align:center;padding:0}
+.cov td button{all:unset;cursor:pointer;display:block;width:100%;padding:8px 0;border-radius:8px;font-weight:700;font-variant-numeric:tabular-nums}
+.cov .c0 button{background:var(--bad-bg);color:var(--bad)}
+.cov .c1 button{background:var(--warn-bg);color:var(--warn)}
+.cov .c2 button{background:var(--ok-bg);color:var(--ok)}
+.cov td button:focus-visible{outline:2px solid var(--accent)}
+.alerts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.alerts li{display:flex;gap:10px;align-items:flex-start;padding:9px 11px;border-radius:9px;background:var(--soft);font-size:14px}
+.alerts li .dot{width:8px;height:8px;border-radius:50%;margin-top:7px;flex:none}
+.alerts .bad .dot{background:var(--bad)} .alerts .warn .dot{background:var(--warn)} .alerts .info .dot{background:var(--info)}
+.alerts li span{flex:1}
+.act{list-style:none;padding:0;margin:0;font-size:14px}
+.act li{padding:7px 0;border-top:1px solid var(--line);color:var(--ink2)}
+.act li:first-child{border-top:0}
+.act b{color:var(--ink)}
+.act time{display:block;font-size:12px;color:var(--ink3)}
+
+/* ---------- events ---------- */
+.evrow{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.evrow:first-of-type{border-top:0}
+.evdate{text-align:center;border-radius:10px;background:var(--soft);padding:6px 0;line-height:1.1}
+.evdate b{display:block;font:800 22px var(--fd)}
+.evdate small{font-size:12px;color:var(--ink2);font-weight:600}
+.evrow h3{font-size:16.5px;font-weight:700;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.evmeta{font-size:13.5px;color:var(--ink2);margin-top:3px;display:flex;gap:6px 12px;flex-wrap:wrap;align-items:center}
+.bar{height:6px;border-radius:9px;background:var(--soft);overflow:hidden;min-width:80px}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:9px}
+.evside{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.evs-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,1fr);gap:16px;align-items:start}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--line);gap:1px}
+.cal .dow{background:var(--soft);font-size:12.5px;font-weight:700;color:var(--ink2);padding:6px 8px}
+.cal .cell{background:var(--surface);min-height:98px;padding:5px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.cal .cell.out{background:var(--paper)}
+.cal .cell.out .dn{color:var(--ink3)}
+.cal .dn{font-size:12.5px;font-weight:700;padding:1px 4px;align-self:flex-start;border-radius:6px}
+.cal .cell.today .dn{background:var(--accent);color:#fff}
+.cal .ce{all:unset;cursor:pointer;font-size:12px;font-weight:600;line-height:1.25;padding:3px 6px;border-radius:5px;display:block}
+.cal .ce>span{overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+.cal .ce:focus-visible{outline:2px solid var(--accent)}
+.ce.ev{background:color-mix(in srgb,var(--ac,var(--accent)) 16%,var(--surface));color:var(--ink);box-shadow:inset 3px 0 0 var(--ac,var(--accent))}
+.ce.dl{border:1px dashed var(--bad);color:var(--bad)}
+.ce.sh{background:var(--vio-bg);color:var(--vio)}
+.ce.more{color:var(--ink3)}
+.cal .cell.pc{cursor:pointer}
+.pdots{display:flex;flex-wrap:wrap;gap:3px;padding:0 3px}
+.pdots i{width:9px;height:9px;border-radius:3px;background:var(--ac)}
+.pdots i.pend{background:transparent;box-shadow:inset 0 0 0 2px var(--ac)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:10px;border-radius:3px;display:inline-block}
+.calhead{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.calhead h2{font-size:22px;min-width:180px}
+
+/* ---------- posts ---------- */
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:22px}
+.week button{all:unset;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.week button.td{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.week button small{font-size:12px;color:var(--ink3);font-weight:600}
+.week button b{font:700 18px var(--fd)}
+.week button span{font-size:12px;color:var(--ink2)}
+.week button:focus-visible{outline:2px solid var(--accent)}
+.day{margin-bottom:26px;scroll-margin-top:20px}
+.dayh{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.dayh h2{font-size:21px;font-weight:700}
+.dayh .today-tag{background:var(--accent);color:#fff;border-radius:6px;padding:1px 8px;font-size:12.5px;font-weight:700}
+.dayh .slots{color:var(--ink3);font-size:13.5px}
+.dayh .grow{flex:1}
+.plist{display:flex;flex-direction:column;gap:10px}
+.post{display:grid;grid-template-columns:112px minmax(0,1fr) 170px;gap:16px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--ac);border-radius:12px;padding:12px;box-shadow:var(--shadow)}
+.post.is-over{background:linear-gradient(90deg,var(--bad-bg),var(--surface) 30%)}
+.pthumb{all:unset;cursor:pointer;position:relative;width:112px;aspect-ratio:4/5;border-radius:9px;overflow:hidden;background:var(--soft);display:grid;place-items:center;color:var(--ink3)}
+.pthumb img,.pthumb video{width:100%;height:100%;object-fit:cover}
+.pthumb:focus-visible{outline:2px solid var(--accent)}
+.play{position:absolute;inset:auto auto 6px 6px;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;width:26px;height:26px;display:grid;place-items:center}
+.pcount{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.65);color:#fff;border-radius:6px;font-size:12px;font-weight:700;padding:1px 6px}
+.linkthumb{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;text-align:center;padding:6px}
+.pbody{min-width:0;display:flex;flex-direction:column;gap:6px}
+.pmeta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13.5px}
+.cap{margin:0;white-space:pre-wrap;word-break:break-word;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;font-size:14.5px;cursor:pointer}
+.cap.open{-webkit-line-clamp:unset;display:block}
+.tags{margin:0;color:var(--info);font-size:13.5px;word-break:break-word}
+.pact{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.pside{display:flex;flex-direction:column;gap:8px;font-size:12.5px}
+.stsel{font-weight:700;border:0!important;border-radius:8px;padding:7px 10px;cursor:pointer}
+.stsel.s-over{background:var(--bad-bg);color:var(--bad)}
+
+/* ---------- shoots ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:18px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.stat small{color:var(--ink3);font-size:13px;font-weight:600}
+.stat b{display:block;font:700 23px var(--fd);margin-top:2px}
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(268px,1fr);gap:12px;overflow-x:auto;padding-bottom:10px;align-items:start}
+.bcol{background:var(--soft);border-radius:13px;padding:10px;min-height:120px}
+.bcol h3{font-size:14.5px;font-weight:700;display:flex;justify-content:space-between;padding:2px 4px 10px}
+.bcol h3 span{color:var(--ink3)}
+.scard{all:unset;cursor:pointer;display:block;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:12px;margin-bottom:8px;box-shadow:var(--shadow);width:100%;box-sizing:border-box;border-top:3px solid var(--ac,var(--accent))}
+.scard:hover{border-color:var(--line2)}
+.scard:focus-visible{outline:2px solid var(--accent)}
+.scard h4{margin:0 0 6px;font:700 15.5px var(--fd)}
+.scard .row{font-size:13px;color:var(--ink2);display:flex;gap:6px;align-items:center;margin-top:4px}
+.scard .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.scard .prog{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12.5px;font-weight:600;color:var(--ink2)}
+.scard .prog .bar{flex:1}
+.stages{display:flex;gap:4px;margin:4px 0 22px;overflow-x:auto}
+.stages button{all:unset;cursor:pointer;flex:1;min-width:92px;padding:9px 10px 8px;border-radius:9px;background:var(--soft);font-size:12.5px;font-weight:700;color:var(--ink3);border-bottom:3px solid transparent;text-align:center}
+.stages button.done{color:var(--ink2);border-bottom-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.stages button.on{background:var(--accent);color:#fff;border-bottom-color:var(--accent)}
+.stages button:focus-visible{outline:2px solid var(--accent)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:18px}
+.facts div{background:var(--surface);padding:12px 15px}
+.facts small{display:block;color:var(--ink3);font-size:12.5px;font-weight:600}
+.facts b{font-size:15.5px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px;margin-bottom:16px}
+dl.kv{display:grid;grid-template-columns:130px minmax(0,1fr);gap:7px 12px;margin:0;font-size:14px}
+dl.kv dt{color:var(--ink3);font-weight:600}
+dl.kv dd{margin:0;white-space:pre-wrap;word-break:break-word}
+.refs{display:flex;flex-direction:column;gap:4px}
+.refs a{color:var(--info);word-break:break-all;font-size:13.5px}
+.cklist{list-style:none;margin:0;padding:0}
+.cklist li{border-top:1px solid var(--line)}
+.cklist li:first-child{border-top:0}
+.cklist button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:center;padding:7px 2px;width:100%;font-size:14px}
+.cklist button:focus-visible{outline:2px solid var(--accent)}
+.box{width:19px;height:19px;border-radius:6px;border:2px solid var(--line2);display:grid;place-items:center;flex:none;color:#fff}
+.done .box{background:var(--ok);border-color:var(--ok)}
+.done .lab{color:var(--ink3);text-decoration:line-through}
+.drop{display:flex;align-items:center;justify-content:center;gap:10px;border:1.5px dashed var(--line2);border-radius:12px;padding:18px;color:var(--ink2);cursor:pointer;text-align:center;flex-wrap:wrap}
+.drop:hover,.drop.over{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.drop input{position:absolute;opacity:0;width:1px;height:1px}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:14px}
+.vcard{background:var(--surface);border:1px solid var(--line);border-radius:13px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.vcard.st-approved{border-color:color-mix(in srgb,var(--ok) 50%,var(--line))}
+.vcard.st-rejected{opacity:.8}
+.vplayer{background:#0c0a12;aspect-ratio:9/12;display:grid;place-items:center;color:#aaa}
+.vplayer video{width:100%;height:100%;object-fit:contain}
+.vplayer.lnk{aspect-ratio:16/7}
+.vinfo{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.vinfo h4{margin:0;font:700 15px var(--fd);display:flex;gap:8px;align-items:center;flex-wrap:wrap;word-break:break-word}
+.vinfo .meta{font-size:12.5px;color:var(--ink3)}
+.vbtns{display:flex;flex-wrap:wrap;gap:6px}
+.comments{display:flex;flex-direction:column;gap:6px;max-height:190px;overflow-y:auto}
+.cmt{background:var(--soft);border-radius:9px;padding:7px 10px;font-size:13.5px}
+.cmt b{font-size:13px}
+.cmt time{font-size:11.5px;color:var(--ink3);margin-left:6px}
+.cmt p{margin:2px 0 0;white-space:pre-wrap;word-break:break-word}
+.cmt.sys{background:transparent;border:1px dashed var(--line2)}
+.cin{display:flex;gap:6px}
+.cin textarea,.cin input{flex:1}
+.drivechk{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;cursor:pointer}
+.drivechk input{width:17px;height:17px;accent-color:var(--ok)}
+.rev-tabs{margin-bottom:18px}
+
+/* ---------- tables ---------- */
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;color:var(--ink3);font-weight:600;font-size:13px;padding:8px 10px;border-bottom:1px solid var(--line)}
+.tbl td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tblwrap{overflow-x:auto}
+
+/* ---------- modal ---------- */
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:start center;padding:4vh 16px;overflow-y:auto}
+.modal[hidden]{display:none}
+.mback{position:fixed;inset:0;background:rgba(15,12,26,.55)}
+.mcard{position:relative;background:var(--surface);border-radius:16px;width:min(560px,100%);box-shadow:0 30px 80px -20px rgba(0,0,0,.5);animation:pop .16s ease-out}
+.mcard.wide{width:min(900px,100%)}
+@keyframes pop{from{transform:translateY(8px);opacity:0}}
+.mform header{display:flex;justify-content:space-between;align-items:center;padding:18px 22px 6px}
+.mform header h2{font-size:22px;font-weight:700}
+.x{all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border-radius:9px;color:var(--ink2)}
+.x:hover{background:var(--soft)}
+.mbody{padding:12px 22px 6px;display:grid;gap:12px}
+.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.full{grid-column:1/-1}
+.mform footer{display:flex;justify-content:flex-end;gap:8px;padding:14px 22px 20px;border-top:1px solid var(--line);margin-top:10px;flex-wrap:wrap;align-items:center}
+.mform footer .grow{flex:1;font-size:13px;color:var(--ink3)}
+.fld{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fld>span{font-size:13px;font-weight:600;color:var(--ink2);display:flex;justify-content:space-between;gap:8px}
+.fld>span em{font-style:normal;font-weight:500;color:var(--ink3)}
+.sec{grid-column:1/-1;font:700 16px var(--fd);margin-top:10px;padding-top:12px;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.sec:first-child{margin-top:0;padding-top:0;border-top:0}
+.checks{display:flex;flex-wrap:wrap;gap:6px}
+.ck{display:inline-flex;cursor:pointer}
+.ck input{position:absolute;opacity:0;pointer-events:none}
+.ck span{border:1px solid var(--line2);border-radius:99px;padding:5px 12px;font-size:13.5px;font-weight:600;color:var(--ink2)}
+.ck input:checked+span{background:var(--accent);border-color:var(--accent);color:#fff}
+.ck input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.mlist{display:flex;flex-wrap:wrap;gap:8px}
+.mitem{position:relative;width:96px;aspect-ratio:4/5;border-radius:9px;overflow:hidden;background:var(--soft);display:grid;place-items:center;font-size:11px;color:var(--ink3);text-align:center}
+.mitem img,.mitem video{width:100%;height:100%;object-fit:cover}
+.mitem .rm{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.65);color:#fff;border:0;border-radius:6px;width:24px;height:24px;cursor:pointer;display:grid;place-items:center}
+.mitem .ord{position:absolute;left:4px;bottom:4px;background:rgba(0,0,0,.65);color:#fff;border-radius:5px;padding:0 5px;font-size:11px;font-weight:700}
+.viewer{display:flex;flex-direction:column;gap:14px;padding:6px 22px 8px}
+.viewer .vm{background:#0c0a12;border-radius:12px;overflow:hidden;display:grid;place-items:center}
+.viewer .vm img,.viewer .vm video{max-height:62vh;width:auto;margin:auto}
+.vrow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:13.5px}
+.capbox{background:var(--soft);border-radius:10px;padding:12px 14px;white-space:pre-wrap;word-break:break-word;font-size:14.5px;max-height:240px;overflow-y:auto;user-select:text}
+.err{color:var(--bad);font-size:13.5px;font-weight:600;min-height:1em;margin:0}
+.note{font-size:13px;color:var(--ink3);margin:0}
+
+/* ---------- auth ---------- */
+.auth{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,480px)}
+.auth .art{background:var(--side);color:var(--side-ink);padding:48px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.auth .art h1{font-size:clamp(34px,4.6vw,62px);font-weight:800;line-height:1;max-width:11ch;letter-spacing:-.03em}
+.auth .art p{color:var(--side-ink2);max-width:44ch}
+.auth .handles{display:flex;flex-direction:column;gap:6px;font:700 clamp(22px,2.4vw,32px) var(--fd)}
+.auth .handles span:nth-child(1){color:#ff6f9f}
+.auth .handles span:nth-child(2){color:#6fa3ff}
+.auth .formside{display:flex;align-items:center;justify-content:center;padding:40px 28px;background:var(--surface)}
+.auth form{width:100%;max-width:360px;display:flex;flex-direction:column;gap:14px}
+.auth form h2{font-size:28px;font-weight:800}
+.auth form .btn{justify-content:center;padding:11px}
+.boot{min-height:100vh;display:grid;place-items:center;color:var(--ink2)}
+.spin{width:28px;height:28px;border:3px solid var(--line2);border-top-color:var(--accent);border-radius:50%;animation:sp 0.8s linear infinite;margin:0 auto 12px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.toasts{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.3);max-width:90vw;animation:pop .2s ease-out}
+.toast.err{background:var(--bad);color:#fff}
+.toast.ok{background:var(--ok);color:#fff}
+
+
+/* ---------- drive previews ---------- */
+.vm.frame{width:min(100%,42vh);aspect-ratio:9/14;margin:0 auto;background:#0c0a12}
+.vm.frame iframe{width:100%;height:100%;border:0;display:block}
+button.vplayer{all:unset;cursor:pointer;position:relative;display:grid;place-items:center;width:100%;box-sizing:border-box;background:#0c0a12;aspect-ratio:9/12;overflow:hidden;color:#aaa}
+button.vplayer img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+button.vplayer:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.bigplay{position:relative;width:58px;height:58px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:grid;place-items:center;padding-left:4px;box-sizing:border-box}
+.pthumb .linkthumb,.mitem .linkthumb{color:var(--ink3)}
+.mitem img{width:100%;height:100%;object-fit:cover}
+/* ---------- talent ---------- */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;padding:14px}
+.tcard.dnb{opacity:.6}
+.tphoto{all:unset;cursor:pointer;width:92px;aspect-ratio:4/5;border-radius:10px;overflow:hidden;background:var(--soft);display:grid;place-items:center;font:800 26px var(--fd);color:var(--ink3);box-sizing:border-box}
+.tphoto img{width:100%;height:100%;object-fit:cover}
+.tphoto:focus-visible{outline:2px solid var(--accent)}
+.tbody{display:flex;flex-direction:column;gap:5px;min-width:0}
+.tcard h3{font-size:17.5px;font-weight:700}
+.linkbtn.plain{text-decoration:none;color:inherit}
+.linkbtn.plain:hover{text-decoration:underline}
+.tsub{font-size:13.5px;color:var(--ink2)}
+.ig{color:var(--info);font-weight:600;font-size:13.5px;text-decoration:none}
+.ig:hover{text-decoration:underline}
+.tbody .chips{display:flex;flex-wrap:wrap;gap:4px}
+.rates{font-size:13.5px;font-weight:700}
+.tfoot{display:flex;gap:6px 10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--ink3);margin-top:auto;padding-top:4px}
+.stars{color:#d99a00;letter-spacing:1px}
+.phead{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.phead .tphoto{width:112px;cursor:default}
+.photo-prev{display:flex;gap:14px;align-items:center}
+.picklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px;max-height:330px;overflow-y:auto;padding:2px;margin-top:6px}
+.pick{cursor:pointer;display:block;position:relative}
+.pick[hidden]{display:none}
+.pick input{position:absolute;opacity:0;pointer-events:none}
+.pk{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line2);border-radius:10px;padding:8px;height:100%;box-sizing:border-box}
+.pick input:checked+.pk{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--surface));box-shadow:inset 0 0 0 1px var(--accent)}
+.pick input:focus-visible+.pk{outline:2px solid var(--accent);outline-offset:2px}
+.pav{width:40px;height:40px;border-radius:50%;overflow:hidden;background:var(--soft);display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--ink2);flex:none}
+.pav img{width:100%;height:100%;object-fit:cover}
+.pkt{display:flex;flex-direction:column;min-width:0;font-size:13px}
+.pkt small{color:var(--ink3)}
+.pkt .mt{color:var(--ok);font-weight:600}
+.pkt .bk{color:var(--bad);font-weight:600}
+.ratebox{background:var(--soft);border-radius:10px;padding:0 12px;font-size:13.5px;line-height:1.6}
+.ratebox:not(:empty){padding:10px 12px}
+.prow{display:flex;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.prow:first-child{border-top:0}
+.prow .pinfo{flex:1;min-width:0;display:flex;flex-direction:column;font-size:13px;color:var(--ink2)}
+.prow .pinfo .linkbtn,.prow .pinfo b{font-weight:700;font-size:15px;color:var(--ink)}
+.rate{display:flex}
+.rate button{all:unset;cursor:pointer;font-size:19px;line-height:1;color:var(--line2);padding:0 1px}
+.rate button.on{color:#d99a00}
+.rate button:focus-visible{outline:2px solid var(--accent)}
+/* ---------- responsive ---------- */
+@media (max-width:1100px){.evs-grid,.home-grid{grid-template-columns:minmax(0,1fr)}.span2{grid-column:auto}}
+@media (max-width:860px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .side{position:relative;height:auto;flex-direction:column;gap:10px;padding:12px 14px;z-index:20}
+  .brand small,.accts .lbl{display:none}
+  .accts{flex-direction:row;overflow-x:auto}
+  .accts button{white-space:nowrap;padding:6px 10px;font-size:13.5px}
+  nav.nav{flex-direction:row;overflow-x:auto;gap:2px}
+  nav.nav button{white-space:nowrap;padding:7px 10px;font-size:14px}
+  .me{margin:0;border:0;padding:0;flex-direction:row;align-items:center;justify-content:space-between;position:absolute;top:10px;right:12px}
+  .me .who,.sync{display:none}
+  .main{padding:20px 16px 50px}
+  .post{grid-template-columns:88px minmax(0,1fr)}
+  .pthumb{width:88px}
+  .pside{grid-column:1/-1;flex-direction:row;align-items:center;flex-wrap:wrap}
+  .pside .stsel{width:auto}
+  .trow{grid-template-columns:46px minmax(0,1fr) auto;row-gap:4px}
+  .trow .tt{display:none}
+  .trow .btn{grid-column:1/-1;justify-self:start}
+  .grid2,.grid3{grid-template-columns:minmax(0,1fr)}
+  .auth{grid-template-columns:minmax(0,1fr)}
+  .auth .art{padding:30px 24px;gap:20px}
+  .cal .cell{min-height:70px}
+  .cal .ce{font-size:10.5px;padding:1px 3px}
+  .week{grid-template-columns:repeat(7,minmax(64px,1fr));overflow-x:auto}
+  dl.kv{grid-template-columns:110px minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal" class="modal" hidden><div class="mback"></div><div class="mcard" role="dialog" aria-modal="true"></div></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="firebase-config.js"></script>
+<script type="module">
+import * as FB from './vendor/firebase.js';
+/* ================= utilities ================= */
+const $=(s,r=document)=>r.querySelector(s);
+const h=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse=s=>{const [y,m,d]=String(s).split('-').map(Number);return new Date(y,(m||1)-1,d||1)};
+const today=()=>ymd(new Date());
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return ymd(d)};
+const diff=(a,b)=>Math.round((parse(a)-parse(b))/864e5);
+const fmtD=(s,o={day:'numeric',month:'short'})=>s?parse(s).toLocaleDateString('en-IN',o):'—';
+const fmtLong=s=>fmtD(s,{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+const money=n=>'₹'+(Number(n)||0).toLocaleString('en-IN');
+const num=v=>Number(v)||0;
+const clone=o=>JSON.parse(JSON.stringify(o||{}));
+const weekStart=s=>{const d=parse(s);return addDays(s,-((d.getDay()+6)%7))};
+const monthFirst=s=>s.slice(0,8)+'01';
+const addMonths=(s,n)=>{const d=parse(s);d.setDate(1);d.setMonth(d.getMonth()+n);return ymd(d)};
+const rel=n=>n===0?'today':n===1?'tomorrow':n===-1?'yesterday':n>0?`in ${n} days`:`${-n} days ago`;
+const fmtTime=t=>{if(!t)return'';const [H,M]=t.split(':').map(Number);return `${(H%12)||12}:${pad(M)} ${H<12?'am':'pm'}`};
+const safeUrl=u=>/^https?:\/\//i.test(String(u||'').trim())?String(u).trim():'';
+const first=n=>String(n||'').split(' ')[0];
+const initials=n=>String(n||'?').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase();
+const slug=s=>String(s||'file').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,50)||'file';
+function ago(t){if(!t)return'';const s=(Date.now()-t)/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+' min ago';if(s<86400)return Math.floor(s/3600)+' h ago';const d=new Date(t);return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})+', '+d.toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'})}
+
+const I={home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',posts:'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',cal:'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',film:'M3 6h13v12H3zM16 10l5-3v10l-5-3',check:'M4 12l5 5L20 6',users:'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c0-4 3-6 7-6s7 2 7 6M17 11a3 3 0 1 0 0-6M22 21c0-3-2-5-5-5.5',gear:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 21h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z',copy:'M8 8h12v12H8zM16 8V4H4v12h4',down:'M12 4v12M6 10l6 6 6-6M4 20h16',plus:'M12 5v14M5 12h14',up:'M12 16V4M6 10l6-6 6 6M4 20h16',link:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1',trash:'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',edit:'M4 20h4L19 9l-4-4L4 16zM13 7l4 4',left:'M15 6l-6 6 6 6',right:'M9 6l6 6-6 6',moon:'M20 14A8 8 0 1 1 10 4a6 6 0 0 0 10 10z',out:'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10',key:'M8 15a4 4 0 1 1 3.5-6H21v3h-2v3h-3v-3h-4.5A4 4 0 0 1 8 15z',play:'M8 5v14l11-7z',x:'M6 6l12 12M18 6L6 18',clock:'M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z',pin:'M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11zM12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',msg:'M4 5h16v11H9l-5 4z',person:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 4-6 8-6s8 2 8 6',drive:'M8 3h8l6 11-4 7H6l-4-7zM8 3l8 14M16 3L6 21M2 14h20'};
+const ic=(n,s=18)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="${n==='play'?'currentColor':'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${I[n]}"/></svg>`;
+
+/* ================= constants ================= */
+const DEFAULT_SETTINGS={accounts:[{id:'glomo',handle:'glomo.in',color:'#d9336f',target:3},{id:'ecom',handle:'ecom.buddiess',color:'#2563d9',target:3}],leadDays:30,editDays:7,hashtags:{}};
+const POST_STATUS=[['pending','Pending'],['ready','Ready to post'],['scheduled','Scheduled'],['uploaded','Uploaded'],['hold','On hold']];
+const POST_TYPES=['Reel','Post','Carousel','Story','Collab'];
+const STAGES=[['planning','Planning'],['confirmed','Confirmed'],['shot','Shot done'],['editing','Editing'],['review','In review'],['approved','Approved'],['delivered','On Drive']];
+const VIDEO_TYPES=['UGC','Music video','Voice-over','Product demo','Unboxing','Testimonial','How-to','Before / after','Model lookbook'];
+const RATIOS=['9:16','4:5','1:1','16:9'];
+const GENDERS=['Female','Male','Both','Kids','Not needed'];
+const EVENT_TYPES=['Festival','Sale','Product launch','Brand day','Collab','Other'];
+const PRIORITY=[['high','High'],['medium','Medium'],['low','Low']];
+const PAY=[['unpaid','Unpaid'],['advance','Advance paid'],['paid','Fully paid']];
+const VSTAT={review:'In review',approved:'Approved',changes:'Changes requested',rejected:'Rejected'};
+const CHECK=[['brief','Brief & script finalised'],['refs','Reference videos shared with crew'],['talent','Model / creator confirmed'],['location','Location booked'],['outfits','Outfits & styling ready'],['props','Products & props packed'],['advance','Advance payment done'],['shot','Shoot completed'],['backup','Raw footage backed up'],['edits','Edits delivered for review'],['final','Final payment done']];
+
+/* ================= state ================= */
+const S={db:null,assets:null,downloads:null,mode:'connecting',booted:false,settings:null,team:null,posts:new Map(),events:new Map(),shoots:new Map(),log:[],loaded:{},me:null,view:'home',param:null,acct:'all',screen:null,
+  ui:{posts:{mode:'list',anchor:null,month:null,status:'all',type:'all',q:''},events:{month:null,past:false},shoots:{q:'',event:'all'},review:{tab:'review'}},
+  draft:null,fails:0,lockUntil:0,confirmFn:null,pending:false,raf:0};
+try{S.acct=localStorage.getItem('cd_acct')||'all';const th=localStorage.getItem('cd_theme');if(th)document.documentElement.dataset.theme=th}catch(e){}
+
+const cfg=()=>({...DEFAULT_SETTINGS,...(S.settings||{})});
+const accounts=()=>cfg().accounts||[];
+const acc=id=>accounts().find(a=>a.id===id);
+const visAccts=()=>S.acct==='all'?accounts():accounts().filter(a=>a.id===S.acct);
+const users=()=>(S.team&&S.team.users)||[];
+const userName=id=>(users().find(u=>u.id===id)||{}).name||(id?'Someone':'Unassigned');
+const isAdmin=()=>S.me&&S.me.role==='admin';
+const canApprove=()=>S.me&&(S.me.role==='admin'||S.me.canApprove);
+const inAcctPost=p=>S.acct==='all'||p.account===S.acct;
+const inAcctEv=e=>S.acct==='all'||!(e.accounts||[]).length||(e.accounts||[]).includes(S.acct);
+const inAcctShoot=s=>S.acct==='all'||s.account===S.acct||s.account==='both';
+const postsList=()=>[...S.posts.values()].filter(inAcctPost);
+const eventsList=()=>[...S.events.values()].filter(inAcctEv).sort((a,b)=>a.date<b.date?-1:1);
+const shootsList=()=>[...S.shoots.values()].filter(inAcctShoot);
+const byTime=(a,b)=>(a.time||'99')<(b.time||'99')?-1:1;
+const isOverdue=p=>p.date<today()&&!['uploaded','hold'].includes(p.status);
+const leadOf=ev=>ev.leadDays!==''&&ev.leadDays!=null&&!isNaN(ev.leadDays)?num(ev.leadDays):num(cfg().leadDays)||30;
+const adDeadline=ev=>addDays(ev.date,-leadOf(ev));
+const shootDeadline=s=>{if(s.deadline)return s.deadline;const ev=S.events.get(s.eventId);return ev?adDeadline(ev):null};
+const stageIdx=k=>STAGES.findIndex(x=>x[0]===k);
+const acctColor=id=>id==='both'||!acc(id)?'#6a4be0':acc(id).color;
+const acctLabel=id=>id==='both'?'Both accounts':acc(id)?'@'+acc(id).handle:'—';
+const approvedCount=s=>(s.videos||[]).filter(v=>v.status==='approved').length;
+function allVideos(){const out=[];for(const s of shootsList())for(const v of (s.videos||[]))out.push({s,v});return out}
+function evInfo(ev){
+  const dl=adDeadline(ev),t=today(),shoots=[...S.shoots.values()].filter(s=>s.eventId===ev.id);
+  const target=shoots.reduce((n,s)=>n+num(s.numVideos),0),approved=shoots.reduce((n,s)=>n+approvedCount(s),0);
+  const dLeft=diff(dl,t),evLeft=diff(ev.date,t);let state,label;
+  if(target>0&&approved>=target){state='ok';label='Ads ready'}
+  else if(dLeft<0){state='late';label='Ad deadline passed'}
+  else if(!shoots.length){state=dLeft<=14?'risk':'none';label=dLeft<=14?'No shoot planned':'Not planned yet'}
+  else if(dLeft<=7){state='risk';label='At risk'}
+  else{state='ready';label='On track'}
+  return {dl,shoots,target,approved,dLeft,evLeft,state,label,shootBy:addDays(dl,-(num(cfg().editDays)||7))};
+}
+
+/* ================= data layer (Firestore) ================= */
+const Q={};
+function enqueue(path,fn){const p=(Q[path]||Promise.resolve()).catch(()=>{}).then(fn);Q[path]=p;return p}
+function dbErrMsg(e){const c=(e&&e.code)||'';if(c.includes('permission-denied'))return'You don\'t have permission for this change.';if(c.includes('resource-exhausted'))return'The free daily limit was reached. Changes will work again tomorrow.';if(c.includes('unavailable'))return'You\'re offline. The change will sync when you reconnect.';return'Couldn\'t save. Check your connection and try again.'}
+const clean=o=>JSON.parse(JSON.stringify(o));
+async function save(col,id,data){
+  const d=clean({...data,id,updatedAt:Date.now(),updatedBy:S.me?S.me.id:null});
+  if(S.fs){try{await enqueue(col+'/'+id,()=>FB.setDoc(FB.doc(S.fs,col,id),d))}catch(e){toast(dbErrMsg(e),'err');throw e}}
+  else S[col].set(id,d);
+  return d;
+}
+async function remove(col,id){if(S.fs){try{await enqueue(col+'/'+id,()=>FB.deleteDoc(FB.doc(S.fs,col,id)))}catch(e){toast(dbErrMsg(e),'err');throw e}}else S[col].delete(id)}
+async function saveCfg(name,data){if(S.fs){try{await enqueue('config/'+name,()=>FB.setDoc(FB.doc(S.fs,'config',name),clean(data)))}catch(e){toast(dbErrMsg(e),'err');throw e}}S[name]=data}
+async function saveUser(uid,data){const d=clean({...data,updatedAt:Date.now()});
+  if(S.fs){try{await enqueue('users/'+uid,()=>FB.setDoc(FB.doc(S.fs,'users',uid),d,{merge:true}))}catch(e){toast(dbErrMsg(e),'err');throw e}}
+  else{const t=S.team.users,i=t.findIndex(u=>u.id===uid);if(i>=0)t[i]={...t[i],...d};else t.push({id:uid,...d})}}
+function logAct(text){const e={t:Date.now(),by:S.me?S.me.id:null,text};S.log=[e,...S.log].slice(0,200);if(S.fs)enqueue('log/main',()=>FB.setDoc(FB.doc(S.fs,'log','main'),{entries:S.log})).catch(()=>{})}
+S.unsubs=[];S.fullSub=false;S.postsFrom=addDays(today(),-30);
+function unsubAll(){S.unsubs.forEach(u=>{try{u()}catch(e){}});S.unsubs=[];S.fullSub=false;if(S.postUnsub){S.postUnsub();S.postUnsub=null}}
+function resetData(){['posts','events','shoots','creators','crew'].forEach(c=>S[c]=new Map());S.settings=null;S.team={users:[]};S.log=[];S.loaded={};S.meDoc=null;S.me=null}
+function subErr(e){if(e&&String(e.code).includes('permission-denied'))return;S.mode='error';scheduleRender();toast('Live sync paused. Reload the page to reconnect.','err')}
+function subscribeMe(u){if(S.meUnsub)S.meUnsub();unsubAll();resetData();
+  S.meUnsub=FB.onSnapshot(FB.doc(S.fs,'users',u.uid),s=>{S.meDoc=s.exists()?{...s.data(),id:s.id}:null;S.loaded.me=true;
+    const ok=S.meDoc&&S.meDoc.active!==false;
+    if(ok&&!S.fullSub)subscribeFull();
+    if(!ok&&S.fullSub){const m=S.meDoc;unsubAll();resetData();S.meDoc=m;S.loaded.me=true}
+    scheduleRender()},()=>{S.loaded.me=true;S.meDoc=null;scheduleRender()});
+}
+function subscribeFull(){S.fullSub=true;const fs=S.fs,U=S.unsubs;
+  U.push(FB.onSnapshot(FB.doc(fs,'config','settings'),s=>{S.settings=s.exists()?s.data():null;S.loaded.settings=true;scheduleRender()},e=>{S.loaded.settings=true;subErr(e)}));
+  U.push(FB.onSnapshot(FB.collection(fs,'users'),q=>{S.team={users:q.docs.map(d=>({...d.data(),id:d.id}))};S.loaded.team=true;scheduleRender()},e=>{S.loaded.team=true;subErr(e)}));
+  for(const col of ['events','shoots','creators','crew'])U.push(FB.onSnapshot(FB.collection(fs,col),q=>{const m=new Map();q.docs.forEach(d=>m.set(d.id,d.data()));S[col]=m;S.loaded[col]=true;scheduleRender()},subErr));
+  U.push(FB.onSnapshot(FB.doc(fs,'log','main'),s=>{S.log=s.exists()?((s.data().entries)||[]).slice():[];scheduleRender()},subErr));
+  subscribePosts();
+}
+function subscribePosts(){if(S.postUnsub)S.postUnsub();if(!S.fs)return;
+  S.postUnsub=FB.onSnapshot(FB.query(FB.collection(S.fs,'posts'),FB.where('date','>=',S.postsFrom)),q=>{const m=new Map();q.docs.forEach(d=>m.set(d.id,d.data()));S.posts=m;S.loaded.posts=true;scheduleRender()},subErr)}
+function ensurePostsFrom(d){if(!d||d>=S.postsFrom)return;S.postsFrom=addDays(weekStart(d),-7);if(S.fs){subscribePosts();toast('Loading older posts…')}}
+
+/* ================= media (Google Drive links) ================= */
+function driveId(u){u=String(u||'');const m=u.match(/\/file\/d\/([\w-]{10,})/)||u.match(/[?&]id=([\w-]{10,})/);return m?m[1]:null}
+const isFolder=u=>/\/folders\//.test(String(u||''));
+const thumbUrl=(u,w=640)=>{const id=driveId(u);if(id)return`https://drive.google.com/thumbnail?id=${id}&sz=w${w}`;if(/\.(jpe?g|png|webp|gif)(\?|$)/i.test(u||''))return safeUrl(u);return''};
+const previewUrl=u=>{const id=driveId(u);return id?`https://drive.google.com/file/d/${id}/preview`:''};
+const dlUrl=u=>{const id=driveId(u);return id?`https://drive.google.com/uc?export=download&id=${id}`:safeUrl(u)};
+const openUrl=u=>{const id=driveId(u);return id?`https://drive.google.com/file/d/${id}/view`:safeUrl(u)};
+function imgOrLink(u,w){const t=thumbUrl(u,w);return t?`<img src="${h(t)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-fb="1">`:`<span class="linkthumb">${ic('link',22)}<small>${isFolder(u)?'Drive folder':'Link'}</small></span>`}
+document.addEventListener('error',e=>{const t=e.target;if(!t||t.tagName!=='IMG'||!t.dataset.fb)return;
+  if(t.dataset.fb==='av'){t.replaceWith(document.createTextNode(t.dataset.alt||'?'));return}
+  const s=document.createElement('span');s.className='linkthumb';s.innerHTML=`${ic('drive',22)}<small>Tap to open</small>`;t.replaceWith(s)},true);
+function saveFile(filename,data){try{const b=data instanceof Blob?data:new Blob([data],{type:/\.csv$/.test(filename)?'text/csv':'text/plain'});const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);return true}catch(e){toast('Download didn\'t start. Try again.','err');return false}}
+async function copyText(t){
+  try{await navigator.clipboard.writeText(t);return true}catch(e){}
+  const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;opacity:0;top:0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();return ok;
+}
+const DRIVE_HINT='Not loading? Sign into Google in this browser with the account the Content Desk folder is shared with.';
+function frameHtml(link,title){const p=previewUrl(link);return p?`<div class="vm frame"><iframe src="${h(p)}" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="${h(title||'Preview')}"></iframe></div>`:`<div class="vm" style="padding:30px"><a class="btn" href="${h(safeUrl(link))}" target="_blank" rel="noopener">${ic('link')}Open link</a></div>`}
+const linkBtns=link=>`<span style="display:flex;gap:6px;flex-wrap:wrap"><a class="btn sm" href="${h(openUrl(link))}" target="_blank" rel="noopener">${ic('link',14)}Open in Drive</a><a class="btn sm" href="${h(dlUrl(link))}" target="_blank" rel="noopener">${ic('down',14)}Download</a></span>`;
+
+/* ================= auth (Firebase) ================= */
+function checkSession(){if(S.mode==='local')return;S.me=S.meDoc&&S.meDoc.active!==false?S.meDoc:null}
+function authErr(e){const c=(e&&e.code)||'';if(/invalid-credential|wrong-password|user-not-found|invalid-login/.test(c))return'Email or password is incorrect.';if(c.includes('invalid-email'))return'Enter a valid email address.';if(c.includes('too-many-requests'))return'Too many attempts. Wait a few minutes, or reset your password.';if(c.includes('email-already-in-use'))return'That email already has an account.';if(c.includes('weak-password'))return'Use at least 6 characters.';if(c.includes('network'))return'No internet connection. Try again.';if(c.includes('requires-recent-login'))return'Sign out and in again, then retry.';if(c.includes('permission-denied'))return'The database rules aren\'t published yet. Run "firebase deploy" first (Step 3), then try again.';if(c.includes('api-key'))return'The Firebase config in firebase-config.js has a typo. Paste it again from the Firebase console.';return'Something went wrong. Try again.'}
+async function createMember(email,password){const sec=FB.initializeApp(window.FIREBASE_CONFIG,'add-'+Date.now());
+  try{const sa=FB.initializeAuth(sec,{persistence:FB.inMemoryPersistence});const cred=await FB.createUserWithEmailAndPassword(sa,email,password);const id=cred.user.uid;await FB.signOut(sa);return id}
+  finally{FB.deleteApp(sec).catch(()=>{})}}
+async function finishSetup(uid,name,email){
+  const b=FB.writeBatch(S.fs);
+  b.set(FB.doc(S.fs,'users',uid),{name,email:email.toLowerCase(),role:'admin',canApprove:true,active:true,createdAt:Date.now()});
+  b.set(FB.doc(S.fs,'config','meta'),{owner:uid,createdAt:Date.now()});
+  await b.commit();
+  await FB.setDoc(FB.doc(S.fs,'config','settings'),clean(DEFAULT_SETTINGS));
+}
+
+/* ================= render core ================= */
+function scheduleRender(){if(S.raf)return;S.raf=requestAnimationFrame(()=>{S.raf=0;render()})}
+const isPlaying=()=>[...document.querySelectorAll('#main video')].some(v=>!v.paused&&!v.ended);
+['pause','ended'].forEach(ev=>document.addEventListener(ev,()=>{if(S.pending){S.pending=false;scheduleRender()}},true));
+function setScreen(name,html){if(S.screen===name&&name!=='boot')return;S.screen=name;$('#app').innerHTML=html}
+function render(force){
+  if(!S.booted)return setScreen('boot',bootHtml('Loading Content Desk'));
+  if(S.mode!=='local'){
+    if(!S.authLoaded||!S.metaLoaded)return setScreen('boot',bootHtml('Connecting'));
+    if(!S.authUser)return S.meta?setScreen('login',loginHtml()):setScreen('setup',setupHtml());
+    if(!S.loaded.me)return setScreen('boot',bootHtml('Loading your workspace'));
+    checkSession();
+    if(!S.me){if(S.settingUp)return setScreen('boot',bootHtml('Setting up your tracker'));return S.meta&&S.meta.owner?setScreen('noaccess',noAccessHtml()):setScreen('finish',finishHtml())}
+    if(!(S.loaded.settings&&S.loaded.team))return setScreen('boot',bootHtml('Syncing your team workspace'));
+  }
+  if(!force&&isPlaying()){S.pending=true;return}
+  const keep={};document.querySelectorAll('#main [data-keep]').forEach(el=>{if(el.id)keep[el.id]=el.value});
+  const ae=document.activeElement,fid=ae&&ae.id&&ae.closest&&ae.closest('#main')?ae.id:null;let ss=null,se=null;try{ss=ae.selectionStart;se=ae.selectionEnd}catch(e){}
+  const y=window.scrollY;S.screen='app';
+  $('#app').innerHTML=shellHtml();
+  for(const k in keep){const el=document.getElementById(k);if(el)el.value=keep[k]}
+  if(fid){const el=document.getElementById(fid);if(el){el.focus({preventScroll:true});try{if(ss!=null)el.setSelectionRange(ss,se)}catch(e){}}}
+  window.scrollTo(0,y);
+}
+function go(view,param){S.view=view;S.param=param||null;render(true);window.scrollTo(0,0)}
+function bootHtml(msg){return`<div class="boot"><div><div class="spin"></div>${h(msg)}…</div></div>`}
+
+function authArt(){return`<div class="art"><div class="brand"><span class="logo">C</span><div><b>Content Desk</b></div></div>
+  <h1>Every post, event and shoot in one place.</h1>
+  <div><div class="handles"><span>@glomo.in</span><span>@ecom.buddiess</span></div><p>Plan daily posts, track festival deadlines and review ad videos together. Changes sync for the whole team instantly.</p></div></div>`}
+function setupHtml(){return`<div class="auth">${authArt()}<div class="formside"><form data-form="setup">
+  <h2>Set up your tracker</h2><p class="note">Create the first admin account. Only the very first person to do this becomes the owner, so do it right after going live.</p>
+  ${fld('Your name',inp('name','','text','required maxlength="60"'))}
+  ${fld('Email',inp('email','','email','required autocomplete="username"'))}
+  ${fld('Password <em>at least 6 characters</em>',inp('password','','password','required minlength="6" autocomplete="new-password"'))}
+  <p class="err" id="auth-err"></p><button class="btn pri" type="submit">Create admin account</button></form></div></div>`}
+function finishHtml(){return`<div class="auth">${authArt()}<div class="formside"><form data-form="finish">
+  <h2>Finish setup</h2><p class="note">You're signed in as ${h(S.authUser&&S.authUser.email)}, but the tracker isn't set up yet. Add your name to become the admin.</p>
+  ${fld('Your name',inp('name','','text','required maxlength="60"'))}
+  <p class="err" id="auth-err"></p><button class="btn pri" type="submit">Finish setup</button><button type="button" class="btn ghost" data-act="logout">Sign out</button></form></div></div>`}
+function noAccessHtml(){return`<div class="auth">${authArt()}<div class="formside"><div style="max-width:360px;display:flex;flex-direction:column;gap:14px">
+  <h2 style="font-size:28px;font-weight:800">No access yet</h2><p class="note" style="font-size:15px">You're signed in as <b>${h(S.authUser&&S.authUser.email)}</b>, but this account isn't on the team, or it was deactivated. Ask an admin to add this email on the Team page.</p>
+  <button class="btn" data-act="logout">Sign out</button></div></div></div>`}
+function loginHtml(){return`<div class="auth">${authArt()}<div class="formside"><form data-form="login">
+  <h2>Sign in</h2><p class="note">Use the email and password your admin set up for you.</p>
+  ${fld('Email',inp('email','','email','required autocomplete="username"'))}
+  ${fld('Password',inp('password','','password','required autocomplete="current-password"'))}
+  <p class="err" id="auth-err"></p><button class="btn pri" type="submit">Sign in</button>
+  <button type="button" class="linkbtn" data-act="forgotPw" style="align-self:flex-start">Forgot password?</button></form></div></div>`}
+function shellHtml(){
+  const color=S.acct==='all'?'#6a4be0':((acc(S.acct)||{}).color||'#6a4be0');
+  const nRev=allVideos().filter(x=>x.v.status==='review').length;
+  const nav=[['home','Overview','home'],['posts','Posts','posts'],['events','Event calendar','cal'],['shoots','Shoot planner','film'],['talent','Talent & crew','person'],['review','Video review','check',nRev]];
+  if(isAdmin())nav.push(['team','Team & logins','users'],['settings','Settings','gear']);
+  const cur=S.view==='shoot'?'shoots':S.view;
+  const sync=S.mode==='live'?'<div class="sync"><i></i>Live sync on</div>':S.mode==='local'?'<div class="sync local"><i></i>Preview mode</div>':'<div class="sync err"><i></i>Sync paused</div>';
+  return`<div class="shell" style="--accent:${color}">
+  <aside class="side">
+    <div class="brand"><span class="logo">C</span><div><b>Content Desk</b><small>Posts, events & shoots</small></div></div>
+    <div class="accts"><div class="lbl">Instagram account</div>
+      <button data-act="acct" data-id="all" class="${S.acct==='all'?'on':''}"><i style="background:linear-gradient(135deg,#ff6f9f 50%,#6fa3ff 50%)"></i>All accounts</button>
+      ${accounts().map(a=>`<button data-act="acct" data-id="${h(a.id)}" class="${S.acct===a.id?'on':''}"><i style="background:${h(a.color)}"></i>@${h(a.handle)}</button>`).join('')}
+    </div>
+    <nav class="nav" aria-label="Sections">${nav.map(([k,l,i,b])=>`<button data-act="nav" data-view="${k}" class="${cur===k?'on':''}" ${cur===k?'aria-current="page"':''}>${ic(i)}${l}${b?`<span class="badge">${b}</span>`:''}</button>`).join('')}</nav>
+    <div class="me">${sync}
+      <div class="who"><span class="av">${h(initials(S.me.name))}</span><div><b>${h(S.me.name)}</b><small>${S.me.role==='admin'?'Admin':'Staff'}${S.me.canApprove&&S.me.role!=='admin'?', approver':''}</small></div></div>
+      <div class="tools"><button data-act="myPassword" title="Change password" aria-label="Change password">${ic('key')}</button><button data-act="theme" title="Switch light/dark" aria-label="Switch light or dark theme">${ic('moon')}</button><button data-act="logout" title="Sign out" aria-label="Sign out">${ic('out')}</button></div>
+    </div>
+  </aside>
+  <main class="main" id="main">${S.mode==='local'?'<div class="localbar"><b>Preview mode.</b> Firebase is not connected, so changes stay in this browser tab only.</div>':''}${viewHtml()}</main></div>`;
+}
+function viewHtml(){
+  const v=S.view;
+  if((v==='team'||v==='settings')&&!isAdmin())return vHome();
+  return({home:vHome,posts:vPosts,events:vEvents,shoots:vShoots,shoot:vShoot,review:vReview,talent:vTalent,team:vTeam,settings:vSettings}[v]||vHome)();
+}
+
+/* ================= form helpers ================= */
+const fld=(label,input,cls='')=>`<label class="fld ${cls}"><span>${label}</span>${input}</label>`;
+const fdiv=(label,input,cls='')=>`<div class="fld ${cls}"><span>${label}</span>${input}</div>`;
+const inp=(name,val='',type='text',attrs='')=>`<input name="${name}" type="${type}" value="${h(val)}" ${attrs}>`;
+const area=(name,val='',rows=3,attrs='')=>`<textarea name="${name}" rows="${rows}" ${attrs}>${h(val)}</textarea>`;
+const sel=(name,opts,val,attrs='')=>`<select name="${name}" ${attrs}>${opts.map(o=>{const[v,l]=Array.isArray(o)?o:[o,o];return`<option value="${h(v)}" ${String(v)===String(val??'')?'selected':''}>${h(l)}</option>`}).join('')}</select>`;
+const checks=(name,opts,vals=[])=>`<div class="checks">${opts.map(o=>{const[v,l]=Array.isArray(o)?o:[o,o];return`<label class="ck"><input type="checkbox" name="${name}" value="${h(v)}" ${(vals||[]).includes(v)?'checked':''}><span>${h(l)}</span></label>`}).join('')}</div>`;
+function formObj(form){const o={};const fd=new FormData(form);const cb=new Set([...form.querySelectorAll('input[type=checkbox]')].map(c=>c.name).filter(Boolean));
+  for(const[k,v]of fd.entries()){if(cb.has(k))(o[k]=o[k]||[]).push(v);else o[k]=typeof v==='string'?v.trim():v}
+  cb.forEach(n=>{if(!(n in o))o[n]=[]});return o}
+const userOpts=(blank='Unassigned')=>[['',blank],...users().filter(u=>u.active!==false).map(u=>[u.id,u.name])];
+const eventOpts=()=>[['','No event'],...[...S.events.values()].sort((a,b)=>a.date<b.date?-1:1).map(e=>[e.id,`${e.name} (${fmtD(e.date)})`])];
+
+/* ================= modal & toast ================= */
+function openModal(html,wide){const m=$('#modal'),c=m.querySelector('.mcard');c.className='mcard'+(wide?' wide':'');c.innerHTML=html;m.hidden=false;document.body.style.overflow='hidden';const f=c.querySelector('input:not([type=hidden]):not([type=file]),select,textarea');if(f)setTimeout(()=>f.focus(),30)}
+function closeModal(){const m=$('#modal');m.hidden=true;m.querySelector('.mcard').innerHTML='';document.body.style.overflow='';m.querySelectorAll('video').forEach(v=>v.pause());S.draft=null}
+function toast(msg,kind){const t=document.createElement('div');t.className='toast '+(kind||'');t.textContent=msg;$('#toasts').appendChild(t);setTimeout(()=>t.remove(),kind==='err'?5200:2800)}
+function confirmBox(title,body,yes,fn){S.confirmFn=fn;openModal(`<div class="mform"><header><h2>${h(title)}</h2><button class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header><div class="mbody"><p class="note" style="font-size:14.5px;color:var(--ink2)">${h(body)}</p></div><footer><button class="btn" data-act="closeModal">Cancel</button><button class="btn bad" data-act="confirmYes">${h(yes)}</button></footer></div>`)}
+
+/* ================= OVERVIEW ================= */
+function statusChip(p){const s=POST_STATUS.find(x=>x[0]===p.status)||POST_STATUS[0];return isOverdue(p)?'<span class="chip s-over">Overdue</span>':`<span class="chip s-${s[0]}">${s[1]}</span>`}
+function vHome(){
+  const t=today(),accs=visAccts(),posts=postsList(),tp=posts.filter(p=>p.date===t),up=tp.filter(p=>p.status==='uploaded').length;
+  const hr=new Date().getHours(),greet=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+  const alerts=computeAlerts(),evs=eventsList().filter(e=>(e.endDate||e.date)>=t).slice(0,5);
+  return`<header class="vh"><div><h1>${greet}, ${h(first(S.me.name))}</h1><p class="sub">${fmtD(t,{weekday:'long',day:'numeric',month:'long'})}. ${tp.length?`${up} of ${tp.length} posts uploaded today.`:'No posts planned for today yet.'}</p></div>
+    <div class="vh-act"><button class="btn pri" data-act="newPost" data-date="${t}">${ic('plus')}New post</button><button class="btn" data-act="newShoot">${ic('film')}Plan a shoot</button></div></header>
+  <section class="today-grid">${accs.map(a=>todayCol(a,tp.filter(p=>p.account===a.id).sort(byTime))).join('')||'<p class="empty">Add an Instagram account in Settings.</p>'}</section>
+  <div class="home-grid">
+    <section class="panel"><div class="ph"><h2>Next 7 days</h2><span class="hint">Posts planned vs daily target. Tap a day to open it.</span></div>${coverage(accs,posts)}</section>
+    <section class="panel"><div class="ph"><h2>Needs attention</h2><span class="count">${alerts.length}</span></div>${alerts.length?`<ul class="alerts">${alerts.slice(0,9).map(a=>`<li class="${a.lv}"><i class="dot"></i><span>${a.html}</span>${a.act?`<button class="btn sm" ${a.act}>Open</button>`:''}</li>`).join('')}</ul>`:'<p class="empty">Nothing overdue or at risk right now.</p>'}</section>
+    <section class="panel"><div class="ph"><h2>Upcoming events</h2><button class="btn sm ghost" data-act="nav" data-view="events">Open calendar</button></div>${evs.length?evs.map(eventRow).join(''):`<p class="empty">No upcoming events. <button class="linkbtn" data-act="newEvent">Add an event</button></p>`}</section>
+    <section class="panel"><div class="ph"><h2>Recent activity</h2></div>${S.log.length?`<ul class="act">${S.log.slice(0,8).map(e=>`<li><b>${h(userName(e.by))}</b> ${h(e.text)}<time>${ago(e.t)}</time></li>`).join('')}</ul>`:'<p class="empty">Team activity shows up here.</p>'}</section>
+  </div>`;
+}
+function todayCol(a,list){const up=list.filter(p=>p.status==='uploaded').length;
+  return`<div class="tcol" style="--ac:${h(a.color)}"><div class="tch"><b>@${h(a.handle)}</b><span>${up} of ${list.length} uploaded, target ${num(a.target)||3}/day</span></div>
+  ${list.map(p=>`<div class="trow"><span class="tm">${p.time?h(p.time):'—'}</span><span class="tag tt">${h(p.type)}</span><span class="tc">${h((p.caption||'No caption yet').split('\n')[0])}</span>${statusChip(p)}${p.status!=='uploaded'?`<button class="btn sm" data-act="markUploaded" data-id="${p.id}">${ic('check',14)}Mark uploaded</button>`:`<button class="btn sm ghost" data-act="viewPost" data-id="${p.id}">View</button>`}</div>`).join('')||`<p class="empty">Nothing planned for today. <button class="linkbtn" data-act="newPost" data-date="${today()}" data-acct="${h(a.id)}">Add a post</button></p>`}</div>`}
+function coverage(accs,posts){const t=today(),days=[...Array(7)].map((_,i)=>addDays(t,i));
+  return`<div class="tblwrap"><table class="cov"><thead><tr><th></th>${days.map((d,i)=>`<th class="${i===0?'td':''}">${fmtD(d,{weekday:'short'})}<br>${parse(d).getDate()}</th>`).join('')}</tr></thead><tbody>
+  ${accs.map(a=>`<tr><th class="acc">@${h(a.handle)}</th>${days.map(d=>{const n=posts.filter(p=>p.account===a.id&&p.date===d).length,tg=num(a.target)||3;return`<td class="${n===0?'c0':n<tg?'c1':'c2'}"><button data-act="goPostsDate" data-date="${d}" aria-label="${n} of ${tg} posts on ${fmtD(d)}">${n}/${tg}</button></td>`}).join('')}</tr>`).join('')}</tbody></table></div>`}
+function computeAlerts(){
+  const t=today(),out=[],posts=postsList();
+  const od=posts.filter(isOverdue);if(od.length)out.push({lv:'bad',html:`<b>${od.length} post${od.length>1?'s':''}</b> from earlier days ${od.length>1?'were':'was'} never marked uploaded.`,act:'data-act="postsOverdue"'});
+  for(const ev of eventsList()){if(ev.date<t)continue;const i=evInfo(ev);
+    if(i.state==='late')out.push({lv:'bad',html:`Ad videos for <b>${h(ev.name)}</b> were due ${fmtD(i.dl)}. ${i.approved} of ${i.target||'?'} approved.`,act:`data-act="viewEvent" data-id="${ev.id}"`});
+    else if(i.state==='risk')out.push({lv:'warn',html:`<b>${h(ev.name)}</b>: ${i.label.toLowerCase()}. Ad videos due ${rel(i.dLeft)} (${fmtD(i.dl)}).`,act:`data-act="viewEvent" data-id="${ev.id}"`})}
+  const nr=allVideos().filter(x=>x.v.status==='review').length;if(nr)out.push({lv:'info',html:`<b>${nr} video${nr>1?'s':''}</b> waiting for approval.`,act:'data-act="nav" data-view="review"'});
+  for(const s of shootsList()){
+    if(s.shootDate&&stageIdx(s.stage)<2){const d=diff(s.shootDate,t);const miss=CHECK.slice(0,7).filter(c=>!(s.checklist||{})[c[0]]).length;
+      if(d>=0&&d<=3&&miss)out.push({lv:'warn',html:`Shoot <b>${h(s.title)}</b> is ${rel(d)} and ${miss} prep item${miss>1?'s are':' is'} unchecked.`,act:`data-act="openShoot" data-id="${s.id}"`});
+      if(d<0)out.push({lv:'warn',html:`Shoot <b>${h(s.title)}</b> date has passed but it's still in ${h((STAGES.find(x=>x[0]===s.stage)||STAGES[0])[1])}.`,act:`data-act="openShoot" data-id="${s.id}"`})}
+    const dl=shootDeadline(s);if(dl&&stageIdx(s.stage)<5&&diff(dl,t)<0)out.push({lv:'bad',html:`<b>${h(s.title)}</b> missed its delivery deadline (${fmtD(dl)}).`,act:`data-act="openShoot" data-id="${s.id}"`});
+    if(stageIdx(s.stage)>=2&&s.paymentStatus!=='paid'){const bal=budget(s).balance;if(bal>0)out.push({lv:'info',html:`${money(bal)} still to pay for <b>${h(s.title)}</b>.`,act:`data-act="openShoot" data-id="${s.id}"`})}
+  }
+  const rank={bad:0,warn:1,info:2};return out.sort((a,b)=>rank[a.lv]-rank[b.lv]);
+}
+function eventRow(ev){const i=evInfo(ev),d=parse(ev.date),pct=i.target?Math.min(100,Math.round(i.approved/i.target*100)):0;
+  return`<div class="evrow"><div class="evdate"><b>${d.getDate()}</b><small>${d.toLocaleDateString('en-IN',{month:'short'})}</small></div>
+  <div style="min-width:0"><h3>${h(ev.name)} <span class="chip s-${i.state}">${i.label}</span></h3>
+  <div class="evmeta"><span>Event ${rel(i.evLeft)}</span><span>Ads due <b>${fmtD(i.dl)}</b> (${rel(i.dLeft)})</span>${i.target?`<span style="display:inline-flex;gap:6px;align-items:center">${i.approved}/${i.target} videos approved <span class="bar" style="width:70px"><i style="width:${pct}%"></i></span></span>`:''}</div></div>
+  <div class="evside"><button class="btn sm" data-act="viewEvent" data-id="${ev.id}">Details</button>${i.shoots.length?'':`<button class="btn sm ghost" data-act="shootForEvent" data-id="${ev.id}">${ic('plus',14)}Plan shoot</button>`}</div></div>`}
+
+/* ================= POSTS ================= */
+function vPosts(){
+  const U=S.ui.posts,t=today();if(!U.anchor)U.anchor=weekStart(t);if(!U.month)U.month=monthFirst(t);
+  const filt=p=>(U.status==='all'||(U.status==='overdue'?isOverdue(p):p.status===U.status))&&(U.type==='all'||p.type===U.type);
+  const q=U.q.toLowerCase();const all=postsList().filter(filt);
+  let body;
+  if(q){const res=all.filter(p=>((p.caption||'')+' '+(p.hashtags||'')+' '+(p.notes||'')).toLowerCase().includes(q)).sort((a,b)=>a.date<b.date?1:-1);
+    body=(S.fs?`<p class="note" style="margin-bottom:8px">Searching posts from ${fmtD(S.postsFrom,{day:'numeric',month:'short',year:'numeric'})} onwards. <button class="linkbtn" data-act="loadOlder">Include 3 more months</button></p>`:'')+(res.length?`<p class="note" style="margin-bottom:12px">${res.length} post${res.length>1?'s':''} match "${h(U.q)}"</p><div class="plist">${res.map(p=>`<div><div class="muted" style="font-size:13px;font-weight:600;margin:4px 0">${fmtLong(p.date)}</div>${postCard(p)}</div>`).join('')}</div>`:`<div class="emptybig"><h3>No posts match "${h(U.q)}"</h3><p>Try another word from the caption or hashtags.</p></div>`)}
+  else if(U.status==='overdue'){const res=all.sort((a,b)=>a.date<b.date?-1:1);body=res.length?`<div class="plist">${res.map(p=>`<div><div class="muted" style="font-size:13px;font-weight:600;margin:4px 0">${fmtLong(p.date)}</div>${postCard(p)}</div>`).join('')}</div>`:'<div class="emptybig"><h3>No overdue posts</h3><p>Every past post has been uploaded or put on hold.</p></div>'}
+  else if(U.mode==='month')body=postsMonth(all);
+  else body=postsWeek(all);
+  const nav=q||U.status==='overdue'?'':U.mode==='month'?`<div class="calhead"><button class="btn sm" data-act="pMonth" data-d="-1" aria-label="Previous month">${ic('left')}</button><button class="btn sm" data-act="pMonth" data-d="1" aria-label="Next month">${ic('right')}</button><h2>${parse(U.month).toLocaleDateString('en-IN',{month:'long',year:'numeric'})}</h2><button class="btn sm ghost" data-act="pToday">This month</button></div>`
+    :`<div class="calhead"><button class="btn sm" data-act="pWeek" data-d="-7" aria-label="Previous week">${ic('left')}</button><button class="btn sm" data-act="pWeek" data-d="7" aria-label="Next week">${ic('right')}</button><h2>${fmtD(U.anchor)} – ${fmtD(addDays(U.anchor,6),{day:'numeric',month:'short',year:'numeric'})}</h2><button class="btn sm ghost" data-act="pToday">This week</button></div>`;
+  return`<header class="vh"><div><h1>Posts</h1><p class="sub">Daily feed plan for ${S.acct==='all'?'both accounts':'@'+h((acc(S.acct)||{}).handle)}. Copy the caption, download the media, post on Instagram, then mark it uploaded.</p></div>
+    <div class="vh-act"><button class="btn" data-act="exportPosts">${ic('down')}Export CSV</button><button class="btn pri" data-act="newPost">${ic('plus')}New post</button></div></header>
+  <div class="toolbar"><div class="seg" role="group" aria-label="View"><button data-act="pMode" data-m="list" class="${U.mode==='list'?'on':''}">Week list</button><button data-act="pMode" data-m="month" class="${U.mode==='month'?'on':''}">Month</button></div>
+    <select data-change="pStatus" aria-label="Filter by status">${[['all','All statuses'],...POST_STATUS,['overdue','Overdue only']].map(([v,l])=>`<option value="${v}" ${U.status===v?'selected':''}>${l}</option>`).join('')}</select>
+    <select data-change="pType" aria-label="Filter by type">${[['all','All types'],...POST_TYPES.map(x=>[x,x])].map(([v,l])=>`<option value="${v}" ${U.type===v?'selected':''}>${l}</option>`).join('')}</select>
+    <span class="grow"></span><input type="search" id="post-q" data-input="pSearch" placeholder="Search captions & hashtags" value="${h(U.q)}" aria-label="Search posts"></div>
+  ${nav}${body}`;
+}
+function postsWeek(all){const U=S.ui.posts,t=today(),days=[...Array(7)].map((_,i)=>addDays(U.anchor,i)),accs=visAccts(),target=accs.reduce((n,a)=>n+(num(a.target)||3),0);
+  return`<div class="week">${days.map(d=>{const n=all.filter(p=>p.date===d);const up=n.filter(p=>p.status==='uploaded').length;return`<button data-act="jumpDay" data-date="${d}" class="${d===t?'td':''}"><small>${fmtD(d,{weekday:'short'})}</small><b>${parse(d).getDate()}</b><span>${n.length}/${target} planned${n.length?`, ${up} up`:''}</span></button>`}).join('')}</div>
+  ${days.map(d=>{const list=all.filter(p=>p.date===d).sort((a,b)=>(a.account+(a.time||'99'))<(b.account+(b.time||'99'))?-1:1);
+    return`<section class="day" id="day-${d}"><div class="dayh"><h2>${fmtD(d,{weekday:'long',day:'numeric',month:'short'})}</h2>${d===t?'<span class="today-tag">Today</span>':''}<span class="slots">${list.length} of ${target} slots filled</span><span class="grow"></span><button class="btn sm" data-act="newPost" data-date="${d}">${ic('plus',14)}Add post</button></div>
+    ${list.length?`<div class="plist">${list.map(postCard).join('')}</div>`:`<p class="empty">No posts planned for this day.</p>`}</section>`}).join('')}`}
+function postsMonth(all){const U=S.ui.posts,t=today(),start=weekStart(U.month),m=parse(U.month).getMonth();
+  const cells=[...Array(42)].map((_,i)=>addDays(start,i));
+  return`<div class="cal">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="dow">${d}</div>`).join('')}
+  ${cells.map(d=>{const l=all.filter(p=>p.date===d);return`<div class="cell pc ${parse(d).getMonth()!==m?'out':''} ${d===t?'today':''}" data-act="goPostsDate" data-date="${d}" role="button" tabindex="0" aria-label="${fmtD(d)}: ${l.length} posts"><span class="dn">${parse(d).getDate()}</span>
+    <div class="pdots">${l.map(p=>`<i class="${p.status==='uploaded'?'':'pend'}" style="--ac:${h(acctColor(p.account))}" title="${h(p.type)}: ${h((POST_STATUS.find(x=>x[0]===p.status)||[])[1])}"></i>`).join('')}</div></div>`}).join('')}</div>
+  <div class="legend"><span><i style="background:var(--ink2)"></i>Uploaded</span><span><i style="box-shadow:inset 0 0 0 2px var(--ink2)"></i>Not uploaded yet</span>${accounts().map(a=>`<span><i style="background:${h(a.color)}"></i>@${h(a.handle)}</span>`).join('')}</div>`}
+function thumb(m){if(!m)return`<span class="linkthumb">${ic('posts',22)}<small>No media</small></span>`;return imgOrLink(m.link,400)}
+function postCard(p){const a=acc(p.account)||{handle:'?',color:'#888'},m=p.media||[],over=isOverdue(p),ev=p.eventId&&S.events.get(p.eventId);
+  return`<article class="post ${over?'is-over':''}" style="--ac:${h(a.color)}">
+  <button class="pthumb" data-act="viewPost" data-id="${p.id}" aria-label="Open post media and caption">${thumb(m[0])}${m.length>1?`<span class="pcount">1/${m.length}</span>`:''}</button>
+  <div class="pbody"><div class="pmeta"><span class="handle">@${h(a.handle)}</span><span class="tag">${h(p.type)}</span>${p.time?`<span class="muted">${ic('clock',14)} ${fmtTime(p.time)}</span>`:''}${over?'<span class="chip s-over">Overdue</span>':''}${ev?`<span class="chip">${h(ev.name)}</span>`:''}</div>
+    <p class="cap" data-act="expand">${p.caption?h(p.caption):'<span class="muted">No caption yet</span>'}</p>${p.hashtags?`<p class="tags">${h(p.hashtags)}</p>`:''}
+    ${p.notes?`<p class="note">${ic('msg',13)} ${h(p.notes)}</p>`:''}
+    <div class="pact"><button class="btn sm" data-act="copyCaption" data-id="${p.id}">${ic('copy',14)}Copy caption</button>
+      ${m.length===1?`<a class="btn sm" href="${h(dlUrl(m[0].link))}" target="_blank" rel="noopener">${ic('down',14)}Download</a>`:m.length?`<button class="btn sm" data-act="viewPost" data-id="${p.id}">${ic('down',14)}Download all ${m.length}</button>`:''}
+      <button class="btn sm ghost" data-act="editPost" data-id="${p.id}">${ic('edit',14)}Edit</button><button class="btn sm ghost" data-act="dupPost" data-id="${p.id}">Duplicate</button>
+      ${isAdmin()?`<button class="btn sm ghost danger" data-act="delPost" data-id="${p.id}" aria-label="Delete post">${ic('trash',14)}</button>`:''}</div></div>
+  <div class="pside"><select class="stsel ${over?'s-over':'s-'+h(p.status)}" data-change="postStatus" data-id="${p.id}" aria-label="Post status">${POST_STATUS.map(([v,l])=>`<option value="${v}" ${p.status===v?'selected':''}>${l}</option>`).join('')}</select>
+    ${p.status==='uploaded'?`<span class="muted">Uploaded by ${h(userName(p.uploadedBy))}<br>${ago(p.uploadedAt)}</span>${safeUrl(p.postUrl)?`<a class="linkbtn" href="${h(safeUrl(p.postUrl))}" target="_blank" rel="noopener">View on Instagram</a>`:`<button class="linkbtn" data-act="editPost" data-id="${p.id}" style="font-size:12.5px">Add Instagram link</button>`}`:`<span class="muted">Assigned to ${h(userName(p.assignee))}</span>`}</div></article>`}
+
+function openPostEditor(id,tpl){
+  const base={account:S.acct!=='all'?S.acct:(accounts()[0]||{}).id,date:today(),time:'',type:'Reel',caption:'',hashtags:'',media:[],status:'pending',notes:'',assignee:S.me.id,eventId:'',postUrl:''};
+  const p=id?clone(S.posts.get(id)):{...base,...(tpl||{})};
+  S.draft={kind:'post',id,media:clone(p.media||[]),busy:0};
+  const tagsets=cfg().hashtags||{};
+  openModal(`<form data-form="post" class="mform"><header><h2>${id?'Edit post':'New post'}</h2><button type="button" class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header>
+  <div class="mbody grid3">
+    ${fld('Instagram account',sel('account',accounts().map(a=>[a.id,'@'+a.handle]),p.account,'data-change="postAcct"'))}
+    ${fld('Post date',inp('date',p.date,'date','required'))}
+    ${fld('Time slot',inp('time',p.time,'time'))}
+    ${fld('Type',sel('type',POST_TYPES,p.type))}
+    ${fld('Status',sel('status',POST_STATUS,p.status))}
+    ${fld('Assigned to',sel('assignee',userOpts(),p.assignee))}
+    ${fld(`Caption <em id="capcount">${(p.caption||'').length}/2200</em>`,area('caption',p.caption,6,'maxlength="2200" data-input="capCount" placeholder="Write the caption exactly as it should go on Instagram"'),'full')}
+    ${fld(`Hashtags <em id="tagcount">${((p.hashtags||'').match(/#\w+/g)||[]).length}/30</em>`,area('hashtags',p.hashtags,2,'data-input="tagCount" placeholder="#glomo #festivewear"'),'full')}
+    <div class="full" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:-4px">${accounts().filter(a=>(tagsets[a.id]||'').trim()).map(a=>`<button type="button" class="btn sm" data-act="insertTags" data-id="${h(a.id)}">${ic('plus',13)}Insert @${h(a.handle)} hashtag set</button>`).join('')||'<span class="note">Tip: save hashtag sets per account in Settings to insert them in one click.</span>'}</div>
+    <div class="sec">Media <span class="note" style="font-weight:400;font-family:var(--fb)">Google Drive links in posting order</span></div>
+    <div class="full"><div class="mlist" id="draft-media"></div>
+      <div class="cin" style="margin-top:8px"><input type="text" id="draft-link" placeholder="https://drive.google.com/file/d/…" aria-label="Drive link"><button type="button" class="btn" data-act="addDraftLink">${ic('plus',15)}Add</button></div>
+      <p class="note" style="margin-top:6px">Upload to the Posts folder in Drive, then right-click, Share, Copy link. You can paste several links at once.</p></div>
+    ${fld('Linked event',sel('eventId',eventOpts(),p.eventId))}
+    ${fld('Instagram post link <em>after posting</em>',inp('postUrl',p.postUrl,'url','placeholder="https://instagram.com/p/…"'))}
+    ${fld('Notes for the team',inp('notes',p.notes,'text','placeholder="Tag the collab account, use trending audio…"'))}
+  </div><footer><span class="grow" id="draft-foot"></span><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn pri" type="submit">${id?'Save changes':'Add post'}</button></footer></form>`,true);
+  renderDraftMedia();
+}
+function renderDraftMedia(){const el=$('#draft-media');if(!el||!S.draft)return;const m=S.draft.media;
+  el.innerHTML=m.map((x,i)=>`<div class="mitem">${imgOrLink(x.link,300)}<span class="ord">${i+1}</span><button type="button" class="rm" data-act="rmDraftMedia" data-i="${i}" aria-label="Remove">${ic('x',14)}</button></div>`).join('')||'<span class="note">No media added yet.</span>'}
+
+function openViewer(p){const a=acc(p.account)||{handle:'?'},m=p.media||[];S.viewBase=`${slug(a.handle)}_${p.date}_${slug(p.type)}`;
+  openModal(`<div class="mform"><header><h2>@${h(a.handle)}, ${fmtD(p.date,{weekday:'short',day:'numeric',month:'short'})}${p.time?', '+fmtTime(p.time):''}</h2><button class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header>
+  <div class="viewer">${m.map((x,i)=>`<div>${frameHtml(x.link,'Media '+(i+1))}<div class="vrow" style="margin-top:6px"><span class="muted">${i+1} of ${m.length}</span>${linkBtns(x.link)}</div></div>`).join('')||'<p class="empty">No media on this post yet.</p>'}
+    ${m.length?`<p class="note">${DRIVE_HINT}</p>`:''}
+    <div><div class="vrow" style="margin-bottom:6px"><b>Caption</b><span style="display:flex;gap:6px"><button class="btn sm pri" data-act="copyCaption" data-id="${p.id}">${ic('copy',14)}Copy caption</button><button class="btn sm" data-act="dlCaption" data-id="${p.id}">${ic('down',14)}Caption .txt</button></span></div>
+    <div class="capbox" id="capbox">${h(fullCaption(p))||'<span class="muted">No caption yet.</span>'}</div></div></div>
+  <footer>${p.status!=='uploaded'?`<button class="btn ok" data-act="markUploaded" data-id="${p.id}" data-close="1">${ic('check',15)}Mark uploaded</button>`:'<span class="chip s-uploaded">Uploaded</span>'}<button class="btn" data-act="editPost" data-id="${p.id}">Edit</button></footer></div>`,true)}
+const fullCaption=p=>[p.caption,p.hashtags].filter(x=>(x||'').trim()).join('\n\n');
+
+/* ================= EVENTS ================= */
+function vEvents(){const U=S.ui.events,t=today();if(!U.month)U.month=monthFirst(t);
+  const start=weekStart(U.month),m=parse(U.month).getMonth(),cells=[...Array(42)].map((_,i)=>addDays(start,i));
+  const evs=eventsList(),shoots=shootsList();
+  const list=U.past?evs.filter(e=>(e.endDate||e.date)<t).reverse():evs.filter(e=>(e.endDate||e.date)>=t);
+  return`<header class="vh"><div><h1>Event calendar</h1><p class="sub">Festivals, sales and launches. Each event shows its ad-video deadline (${num(cfg().leadDays)||30} days before by default) so shoots are planned in time.</p></div>
+    <div class="vh-act"><button class="btn pri" data-act="newEvent">${ic('plus')}Add event</button></div></header>
+  <div class="evs-grid"><section class="panel"><div class="calhead"><button class="btn sm" data-act="eMonth" data-d="-1" aria-label="Previous month">${ic('left')}</button><button class="btn sm" data-act="eMonth" data-d="1" aria-label="Next month">${ic('right')}</button><h2>${parse(U.month).toLocaleDateString('en-IN',{month:'long',year:'numeric'})}</h2><button class="btn sm ghost" data-act="eToday">Today</button></div>
+    <div class="cal">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="dow">${d}</div>`).join('')}
+    ${cells.map(d=>{const items=[];
+      evs.filter(e=>d>=e.date&&d<=(e.endDate||e.date)).forEach(e=>items.push(`<button class="ce ev" style="--ac:${h(evColor(e))}" data-act="viewEvent" data-id="${e.id}" title="${h(e.name)}"><span>${h(e.name)}</span></button>`));
+      evs.filter(e=>adDeadline(e)===d).forEach(e=>items.push(`<button class="ce dl" data-act="viewEvent" data-id="${e.id}" title="Ad videos due for ${h(e.name)}"><span>${ic('clock',11)} ${h(e.name)} ads</span></button>`));
+      shoots.filter(s=>s.shootDate===d).forEach(s=>items.push(`<button class="ce sh" data-act="openShoot" data-id="${s.id}" title="Shoot: ${h(s.title)}"><span>${ic('film',11)} ${h(s.title)}</span></button>`));
+      const shown=items.slice(0,3);if(items.length>3)shown.push(`<span class="ce more">+${items.length-3} more</span>`);
+      return`<div class="cell ${parse(d).getMonth()!==m?'out':''} ${d===t?'today':''}"><span class="dn">${parse(d).getDate()}</span>${shown.join('')}</div>`}).join('')}</div>
+    <div class="legend"><span><i style="background:color-mix(in srgb,var(--accent) 30%,transparent)"></i>Event</span><span><i style="border:1px dashed var(--bad)"></i>Ad videos due</span><span><i style="background:var(--vio-bg)"></i>Shoot day</span></div></section>
+  <section class="panel"><div class="ph"><h2>${U.past?'Past events':'Coming up'}</h2><button class="btn sm ghost" data-act="evPast">${U.past?'Show upcoming':'Show past'}</button></div>
+    ${list.length?list.map(eventRow).join(''):`<div class="emptybig" style="padding:30px 16px"><h3>${U.past?'No past events':'No upcoming events'}</h3>${U.past?'':'<p>Add festivals, sales and launches so the team can plan ahead.</p><button class="btn pri" data-act="newEvent">Add event</button>'}</div>`}</section></div>`}
+const evColor=e=>(e.accounts||[]).length===1?acctColor(e.accounts[0]):'#6a4be0';
+function openEventEditor(id){const e=id?clone(S.events.get(id)):{name:'',date:'',endDate:'',type:'Festival',accounts:S.acct==='all'?accounts().map(a=>a.id):[S.acct],priority:'high',leadDays:'',offer:'',notes:''};
+  openModal(`<form data-form="event" class="mform" data-id="${id||''}"><header><h2>${id?'Edit event':'Add event'}</h2><button type="button" class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header>
+  <div class="mbody grid2">${fld('Event name',inp('name',e.name,'text','required placeholder="Diwali, Big Billion Days, New collection launch"'),'full')}
+  ${fld('Event date',inp('date',e.date,'date','required'))}${fld('End date <em>optional, for multi-day sales</em>',inp('endDate',e.endDate,'date'))}
+  ${fld('Type',sel('type',EVENT_TYPES,e.type))}${fld('Priority',sel('priority',PRIORITY,e.priority))}
+  ${fdiv('Accounts',checks('accounts',accounts().map(a=>[a.id,'@'+a.handle]),e.accounts),'full')}
+  ${fld(`Ad videos ready <em>days before event; default ${num(cfg().leadDays)||30}</em>`,inp('leadDays',e.leadDays,'number','min="0" max="120" placeholder="'+(num(cfg().leadDays)||30)+'"'))}
+  ${fld('Offer or campaign',inp('offer',e.offer,'text','placeholder="Flat 30% off, free shipping…"'))}
+  ${fld('Content ideas & notes',area('notes',e.notes,3),'full')}</div>
+  <footer><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn pri" type="submit">${id?'Save event':'Add event'}</button></footer></form>`)}
+function openEventView(id){const e=S.events.get(id);if(!e)return;const i=evInfo(e);
+  openModal(`<div class="mform"><header><h2>${h(e.name)}</h2><button class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header>
+  <div class="mbody"><div class="facts" style="margin:0"><div><small>Event date</small><b>${fmtLong(e.date)}${e.endDate&&e.endDate!==e.date?' – '+fmtD(e.endDate):''}</b><br><span class="muted">${rel(i.evLeft)}</span></div>
+    <div><small>Ad videos due</small><b>${fmtLong(i.dl)}</b><br><span class="chip s-${i.state}">${i.label}</span></div>
+    <div><small>Shoot by (suggested)</small><b>${fmtLong(i.shootBy)}</b><br><span class="muted">${rel(diff(i.shootBy,today()))}</span></div>
+    <div><small>Videos approved</small><b>${i.approved} of ${i.target||0}</b></div></div>
+  <dl class="kv"><dt>Type</dt><dd>${h(e.type)}, ${h((PRIORITY.find(x=>x[0]===e.priority)||['','—'])[1])} priority</dd><dt>Accounts</dt><dd>${(e.accounts||[]).map(acctLabel).join(', ')||'Both'}</dd>${e.offer?`<dt>Offer</dt><dd>${h(e.offer)}</dd>`:''}${e.notes?`<dt>Notes</dt><dd>${h(e.notes)}</dd>`:''}
+  <dt>Posts linked</dt><dd>${[...S.posts.values()].filter(p=>p.eventId===e.id).length}</dd></dl>
+  <div><b style="font-family:var(--fd)">Shoots for this event</b>${i.shoots.length?`<ul class="cklist" style="margin-top:6px">${i.shoots.map(s=>`<li><button data-act="openShoot" data-id="${s.id}"><span class="chip s-${h(s.stage)}">${h((STAGES.find(x=>x[0]===s.stage)||STAGES[0])[1])}</span><span style="flex:1">${h(s.title)}</span><span class="muted">${approvedCount(s)}/${num(s.numVideos)} approved</span></button></li>`).join('')}</ul>`:'<p class="empty">No shoot planned yet.</p>'}</div></div>
+  <footer>${isAdmin()?`<button class="btn ghost danger" data-act="delEvent" data-id="${e.id}" style="margin-right:auto">${ic('trash',15)}Delete</button>`:''}<button class="btn" data-act="editEvent" data-id="${e.id}">${ic('edit',15)}Edit</button><button class="btn pri" data-act="shootForEvent" data-id="${e.id}">${ic('film',15)}Plan a shoot</button></footer></div>`,true)}
+
+/* ================= SHOOTS ================= */
+function budget(s){const total=num(s.creatorFee)+num(s.videographerFee)+num(s.otherCost);const paid=s.paymentStatus==='paid'?total:Math.min(total,num(s.advancePaid));return{total,paid,balance:total-paid}}
+function vShoots(){const U=S.ui.shoots,q=U.q.toLowerCase(),t=today();
+  let list=shootsList();if(U.event!=='all')list=list.filter(s=>s.eventId===U.event);if(q)list=list.filter(s=>[s.title,s.products,s.location,shootVgName(s),shootCreatorNames(s),s.notes].join(' ').toLowerCase().includes(q));
+  const active=list.filter(s=>s.stage!=='delivered'),target=list.reduce((n,s)=>n+num(s.numVideos),0),appr=list.reduce((n,s)=>n+approvedCount(s),0);
+  const next=list.filter(s=>s.shootDate&&s.shootDate>=t).sort((a,b)=>a.shootDate<b.shootDate?-1:1)[0];
+  const pend=list.reduce((n,s)=>n+budget(s).balance,0),spent=list.reduce((n,s)=>n+budget(s).total,0);
+  const evOpts=[...new Set(shootsList().map(s=>s.eventId).filter(Boolean))].map(id=>S.events.get(id)).filter(Boolean);
+  return`<header class="vh"><div><h1>Shoot planner</h1><p class="sub">Meta ad shoots from brief to Drive. Deadlines come from the linked event, so everyone can see what's late.</p></div>
+    <div class="vh-act"><button class="btn" data-act="exportShoots">${ic('down')}Export CSV</button><button class="btn pri" data-act="newShoot">${ic('plus')}Plan a shoot</button></div></header>
+  <div class="stats"><div class="stat"><small>Active shoots</small><b>${active.length}</b></div><div class="stat"><small>Videos approved</small><b>${appr} / ${target}</b></div><div class="stat"><small>Next shoot</small><b>${next?fmtD(next.shootDate):'—'}</b></div><div class="stat"><small>Total budget</small><b>${money(spent)}</b></div><div class="stat"><small>Payments pending</small><b style="color:${pend?'var(--bad)':'inherit'}">${money(pend)}</b></div></div>
+  <div class="toolbar"><select data-change="sEvent" aria-label="Filter by event"><option value="all">All events</option>${evOpts.map(e=>`<option value="${e.id}" ${U.event===e.id?'selected':''}>${h(e.name)}</option>`).join('')}</select><span class="grow"></span><input type="search" id="shoot-q" data-input="sSearch" placeholder="Search shoots, crew, products" value="${h(U.q)}" aria-label="Search shoots"></div>
+  ${shootsList().length?`<div class="board">${STAGES.map(([k,l])=>{const col=list.filter(s=>(s.stage||'planning')===k).sort((a,b)=>(shootDeadline(a)||'9')<(shootDeadline(b)||'9')?-1:1);
+    return`<div class="bcol"><h3>${l}<span>${col.length}</span></h3>${col.map(shootCard).join('')||'<p class="empty" style="padding:0 4px">Nothing here.</p>'}</div>`}).join('')}</div>`
+  :`<div class="emptybig"><h3>No shoots planned yet</h3><p>Plan your first ad shoot: pick the event, crew, model and number of videos.</p><button class="btn pri" data-act="newShoot">Plan a shoot</button></div>`}`}
+function shootCard(s){const ev=S.events.get(s.eventId),dl=shootDeadline(s),t=today(),n=num(s.numVideos),a=approvedCount(s),dd=dl?diff(dl,t):null;
+  const late=dd!=null&&dd<0&&stageIdx(s.stage)<5;
+  return`<button class="scard" data-act="openShoot" data-id="${s.id}" style="--ac:${h(acctColor(s.account))}"><h4>${h(s.title)}</h4>
+  ${ev?`<div class="row">${ic('cal',14)}${h(ev.name)}</div>`:''}
+  ${s.shootDate?`<div class="row">${ic('film',14)}Shoot ${fmtD(s.shootDate)}${s.callTime?', '+fmtTime(s.callTime):''}${s.location?' at '+h(s.location):''}</div>`:'<div class="row muted">Shoot date not set</div>'}
+  ${dl?`<div class="row" style="color:${late?'var(--bad)':dd<=7&&stageIdx(s.stage)<5?'var(--warn)':'inherit'};font-weight:${late?700:500}">${ic('clock',14)}Due ${fmtD(dl)} (${rel(dd)})</div>`:''}
+  ${shootCreatorNames(s)||shootVgName(s)?`<div class="row">${ic('person',14)}${h([shootCreatorNames(s),shootVgName(s)?'cam: '+shootVgName(s):''].filter(Boolean).join(', '))}</div>`:''}
+  <div class="chips">${(s.videoTypes||[]).map(x=>`<span class="tag">${h(x)}</span>`).join('')}${s.modelGender&&s.modelGender!=='Not needed'?`<span class="tag">${h(s.modelGender)} model</span>`:''}</div>
+  <div class="prog"><span>${a}/${n||'?'} approved</span><span class="bar"><i style="width:${n?Math.min(100,a/n*100):0}%"></i></span></div></button>`}
+function vShoot(){const s=S.shoots.get(S.param);if(!s)return`<button class="back" data-act="nav" data-view="shoots">${ic('left',16)}Shoot planner</button><div class="emptybig"><h3>This shoot was deleted</h3><p>Go back to the planner to see current shoots.</p></div>`;
+  const ev=S.events.get(s.eventId),dl=shootDeadline(s),t=today(),b=budget(s),si=stageIdx(s.stage||'planning'),ck=s.checklist||{},done=CHECK.filter(c=>ck[c[0]]).length,vids=s.videos||[];
+  const refs=String(s.refs||'').split(/\s+/).map(safeUrl).filter(Boolean);
+  return`<button class="back" data-act="nav" data-view="shoots">${ic('left',16)}Shoot planner</button>
+  <header class="vh"><div><h1>${h(s.title)}</h1><p class="sub"><span class="handle" style="--ac:${h(acctColor(s.account))}">${h(acctLabel(s.account))}</span>${ev?`, for <button class="linkbtn" data-act="viewEvent" data-id="${ev.id}">${h(ev.name)}</button> on ${fmtD(ev.date)}`:''}. Owner: ${h(userName(s.owner))}.</p></div>
+    <div class="vh-act">${isAdmin()?`<button class="btn ghost danger" data-act="delShoot" data-id="${s.id}">${ic('trash',15)}Delete</button>`:''}<button class="btn" data-act="dupShoot" data-id="${s.id}">Duplicate</button><button class="btn pri" data-act="editShoot" data-id="${s.id}">${ic('edit',15)}Edit details</button></div></header>
+  <div class="stages" role="group" aria-label="Stage">${STAGES.map(([k,l],i)=>`<button data-act="setStage" data-id="${s.id}" data-stage="${k}" class="${i===si?'on':i<si?'done':''}" ${i===si?'aria-current="step"':''}>${l}</button>`).join('')}</div>
+  <div class="facts"><div><small>Shoot day</small><b>${s.shootDate?fmtLong(s.shootDate):'Not set'}</b><br><span class="muted">${s.callTime?fmtTime(s.callTime):''}${s.wrapTime?' – '+fmtTime(s.wrapTime):''}${s.shootDate?' ('+rel(diff(s.shootDate,t))+')':''}</span></div>
+    <div><small>Final videos due</small><b style="color:${dl&&diff(dl,t)<0&&si<5?'var(--bad)':'inherit'}">${dl?fmtLong(dl):'No deadline'}</b><br><span class="muted">${dl?rel(diff(dl,t)):'Link an event or set a date'}${!s.deadline&&ev?', '+leadOf(ev)+' days before event':''}</span></div>
+    <div><small>Videos approved</small><b>${approvedCount(s)} of ${num(s.numVideos)||'?'}</b><br><span class="muted">${vids.filter(v=>v.status==='review').length} waiting for review</span></div>
+    <div><small>Budget</small><b>${money(b.total)}</b><br><span class="muted" style="color:${b.balance>0?'var(--bad)':'inherit'}">${!b.total?'No fees entered':b.balance>0?money(b.balance)+' pending':'Fully paid'}</span></div>
+    <div><small>Prep checklist</small><b>${done} of ${CHECK.length}</b></div></div>
+  <div class="sgrid">
+    <section class="panel"><div class="ph"><h2>Brief</h2></div><dl class="kv">
+      <dt>Products</dt><dd>${h(s.products)||'—'}</dd><dt>Video style</dt><dd>${(s.videoTypes||[]).map(h).join(', ')||'—'}</dd><dt>No. of videos</dt><dd>${num(s.numVideos)||'—'}</dd>
+      <dt>Format</dt><dd>${(s.ratios||[]).join(', ')||'—'}${s.duration?', '+h(s.duration):''}</dd><dt>Concept & hook</dt><dd>${h(s.concept)||'—'}</dd><dt>Script / voice-over</dt><dd>${h(s.script)||'—'}</dd><dt>Music</dt><dd>${h(s.music)||'—'}</dd>
+      <dt>Reference videos</dt><dd>${refs.length?`<div class="refs">${refs.map(u=>`<a href="${h(u)}" target="_blank" rel="noopener">${h(u.replace(/^https?:\/\/(www\.)?/,'').slice(0,60))}</a>`).join('')}</div>`:'—'}</dd>${s.notes?`<dt>Notes</dt><dd>${h(s.notes)}</dd>`:''}</dl></section>
+    <section class="panel"><div class="ph"><h2>Crew, talent & location</h2>${s.modelGender?`<span class="chip">${h(s.modelGender)}${['Female','Male','Both'].includes(s.modelGender)?' talent':''}</span>`:''}</div>${talentBlock(s)}<dl class="kv">
+      ${s.crew?`<dt>Crew notes</dt><dd>${h(s.crew)}</dd>`:''}
+      <dt>Location</dt><dd>${h(s.location)||'—'}${safeUrl(s.mapLink)?`<br><a href="${h(safeUrl(s.mapLink))}" target="_blank" rel="noopener">${ic('pin',14)} Open map</a>`:''}</dd>
+      <dt>Outfits</dt><dd>${h(s.outfits)||'—'}</dd><dt>Props</dt><dd>${h(s.props)||'—'}</dd></dl></section>
+    <section class="panel"><div class="ph"><h2>Budget & payments</h2><span class="chip ${s.paymentStatus==='paid'?'s-ok':s.paymentStatus==='advance'?'s-risk':'s-bad'}">${h((PAY.find(x=>x[0]===s.paymentStatus)||PAY[0])[1])}</span></div><dl class="kv">
+      <dt>Creator / model</dt><dd>${money(s.creatorFee)}</dd><dt>Videographer</dt><dd>${money(s.videographerFee)}</dd><dt>Other costs</dt><dd>${money(s.otherCost)}</dd><dt>Total</dt><dd><b>${money(b.total)}</b></dd>
+      <dt>Paid so far</dt><dd>${money(b.paid)}</dd><dt>Balance</dt><dd><b style="color:${b.balance>0?'var(--bad)':'var(--ok)'}">${money(b.balance)}</b></dd>${s.paidDate?`<dt>Paid on</dt><dd>${fmtLong(s.paidDate)}</dd>`:''}${s.paymentNotes?`<dt>Payment notes</dt><dd>${h(s.paymentNotes)}</dd>`:''}</dl></section>
+    <section class="panel"><div class="ph"><h2>Prep checklist</h2><span class="count">${done}/${CHECK.length}</span></div><ul class="cklist">${CHECK.map(([k,l])=>`<li><button class="${ck[k]?'done':''}" data-act="toggleCheck" data-id="${s.id}" data-k="${k}" aria-pressed="${!!ck[k]}"><span class="box">${ck[k]?ic('check',13):''}</span><span class="lab">${l}</span></button></li>`).join('')}</ul></section>
+  </div>
+  <section class="panel" style="margin-bottom:16px"><div class="ph"><h2>Videos</h2><div style="display:flex;gap:6px;flex-wrap:wrap">${safeUrl(s.driveLink)?`<a class="btn sm" href="${h(safeUrl(s.driveLink))}" target="_blank" rel="noopener">${ic('drive',14)}Open Drive folder</a>`:`<button class="btn sm" data-act="editShoot" data-id="${s.id}">${ic('drive',14)}Add Drive folder link</button>`}</div></div>
+    <div class="cin"><input type="text" id="vln-${s.id}" data-keep placeholder="Video name, e.g. Diwali UGC hook 2" aria-label="Video name"><input type="text" id="vlu-${s.id}" data-keep placeholder="Google Drive link to the edited video" aria-label="Video link"><button class="btn pri" data-act="addVideoLink" data-id="${s.id}">${ic('plus',15)}Add for review</button></div>
+    <p class="note" style="margin-top:6px">Upload the edit to this shoot's Drive folder, then right-click, Share, Copy link and paste it here.</p>
+    ${vids.length?`<div class="vgrid">${vids.slice().reverse().map(v=>videoCard(s,v)).join('')}</div>`:'<p class="empty" style="margin-top:12px">No videos yet. Uploads land here for approval.</p>'}</section>
+  <section class="panel"><div class="ph"><h2>Discussion</h2></div><div class="comments" style="max-height:none">${(s.comments||[]).map(cmt).join('')||'<p class="empty">Share updates, changes to plan or questions for the team.</p>'}</div>
+    <div class="cin" style="margin-top:10px"><textarea id="sc-${s.id}" data-keep rows="2" placeholder="Write an update for the team" aria-label="Comment"></textarea><button class="btn pri" data-act="shootComment" data-id="${s.id}">Post</button></div></section>`}
+const cmt=c=>`<div class="cmt ${c.sys?'sys':''}"><b>${h(userName(c.by))}</b><time>${ago(c.at)}</time><p>${h(c.text)}</p></div>`;
+function videoCard(s,v,showShoot){const st=v.status||'review',ev=S.events.get(s.eventId),t=thumbUrl(v.link,640);
+  return`<div class="vcard st-${st}"><button class="vplayer" data-act="playVideo" data-sid="${s.id}" data-vid="${v.id}" aria-label="Play ${h(v.name)}">${t?`<img src="${h(t)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-fb="1">`:''}<span class="bigplay">${ic('play',26)}</span></button>
+  <div class="vinfo"><h4>${h(v.name)} <span class="tag">v${v.version||1}</span> <span class="chip s-${st}">${VSTAT[st]}</span></h4>
+  ${showShoot?`<div class="meta"><button class="linkbtn" data-act="openShoot" data-id="${s.id}">${h(s.title)}</button>${ev?`, ${h(ev.name)}`:''}${shootDeadline(s)?`, due ${fmtD(shootDeadline(s))}`:''}</div>`:''}
+  <div class="meta">Added by ${h(userName(v.by))}, ${ago(v.at)}${v.reviewedBy?`. ${VSTAT[st]} by ${h(userName(v.reviewedBy))}`:''}</div>
+  <div class="vbtns">${reviewBtns(s,v)}
+    <a class="btn sm" href="${h(dlUrl(v.link))}" target="_blank" rel="noopener" aria-label="Download video">${ic('down',14)}</a>
+    <button class="btn sm ghost" data-act="vRevisionOpen" data-sid="${s.id}" data-vid="${v.id}">${ic('up',14)}New version</button>
+    ${isAdmin()?`<button class="btn sm ghost danger" data-act="vDelete" data-sid="${s.id}" data-vid="${v.id}" aria-label="Delete video">${ic('trash',14)}</button>`:''}</div>
+  ${st==='approved'?`<label class="drivechk"><input type="checkbox" data-change="vDrive" data-sid="${s.id}" data-vid="${v.id}" ${v.drive?'checked':''}>In the final Drive folder${v.drive&&v.driveBy?` <span class="muted" style="font-weight:400">(${h(userName(v.driveBy))})</span>`:''}</label>`:''}
+  <div class="comments">${(v.comments||[]).map(cmt).join('')}</div>
+  <div class="cin"><input type="text" id="vc-${v.id}" data-keep placeholder="Feedback, e.g. cut the first 2 seconds" aria-label="Feedback"><button class="btn sm" data-act="vComment" data-sid="${s.id}" data-vid="${v.id}">Send</button></div></div></div>`}
+function reviewBtns(s,v,close){const st=v.status||'review',c=close?' data-close="1"':'';if(!canApprove())return'';
+  return`${st!=='approved'?`<button class="btn sm ok" data-act="vApprove" data-sid="${s.id}" data-vid="${v.id}"${c}>${ic('check',14)}Approve</button>`:''}${st!=='changes'?`<button class="btn sm warn" data-act="vChanges" data-sid="${s.id}" data-vid="${v.id}"${c}>Request changes</button>`:''}${st!=='rejected'?`<button class="btn sm ghost danger" data-act="vReject" data-sid="${s.id}" data-vid="${v.id}"${c}>Reject</button>`:''}`}
+function openShootEditor(id,tpl){
+  const base={title:'',account:S.acct!=='all'?S.acct:'both',eventId:'',products:'',videoTypes:[],numVideos:'',ratios:['9:16'],duration:'',concept:'',script:'',music:'',refs:'',notes:'',location:'',mapLink:'',shootDate:'',callTime:'',wrapTime:'',outfits:'',props:'',videographerId:'',editorId:'',creatorIds:[],crewIds:[],modelGender:'Female',crew:'',creatorFee:'',videographerFee:'',otherCost:'',advancePaid:'',paymentStatus:'unpaid',paidDate:'',paymentNotes:'',deadline:'',driveLink:'',owner:S.me.id,stage:'planning'};
+  const s=id?{...base,...clone(S.shoots.get(id))}:{...base,...(tpl||{})};
+  openModal(`<form data-form="shoot" class="mform" data-id="${id||''}"><header><h2>${id?'Edit shoot':'Plan a shoot'}</h2><button type="button" class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header>
+  <div class="mbody grid3">
+  <div class="sec">Basics</div>
+  ${fld('Shoot title',inp('title',s.title,'text','required placeholder="Diwali kurta sets, UGC batch 1"'),'full')}
+  ${fld('Account',sel('account',[['both','Both accounts'],...accounts().map(a=>[a.id,'@'+a.handle])],s.account))}
+  ${fld('Event',sel('eventId',eventOpts(),s.eventId,'data-change="shootEvent"'))}
+  ${fld('Shoot owner',sel('owner',userOpts(),s.owner))}
+  ${fld('Products',inp('products',s.products,'text','placeholder="SKU / product names"'),'full')}
+  ${fdiv('Video style',checks('videoTypes',VIDEO_TYPES,s.videoTypes),'full')}
+  ${fld('No. of videos',inp('numVideos',s.numVideos,'number','min="0" required'))}
+  ${fdiv('Aspect ratios',checks('ratios',RATIOS,s.ratios))}
+  ${fld('Length',inp('duration',s.duration,'text','placeholder="15–30 sec"'))}
+  <div class="sec">Creative</div>
+  ${fld('Concept & hook',area('concept',s.concept,2,'placeholder="Opening hook, story, CTA"'),'full')}
+  ${fld('Script / voice-over',area('script',s.script,3),'full')}
+  ${fld('Music / audio',inp('music',s.music,'text','placeholder="Trending audio, VO + soft beat…"'))}
+  ${fld('Reference video links <em>one per line</em>',area('refs',s.refs,2,'placeholder="https://instagram.com/reel/…"'),'full')}
+  <div class="sec">Schedule & location</div>
+  ${fld('Shoot date',inp('shootDate',s.shootDate,'date'))}${fld('Call time',inp('callTime',s.callTime,'time'))}${fld('Wrap time',inp('wrapTime',s.wrapTime,'time'))}
+  ${fld('Location',inp('location',s.location,'text','placeholder="Studio name / address"'))}${fld('Map link',inp('mapLink',s.mapLink,'url'))}
+  ${fld('Final videos due <em id="dlhint">'+(dlHint(s.eventId))+'</em>',inp('deadline',s.deadline,'date'))}
+  ${talentSection(s)}
+  ${fld('Outfits & styling',area('outfits',s.outfits,2),'full')}${fld('Props & products to carry',area('props',s.props,2),'full')}
+  <div class="sec">Payments</div>
+  ${fld('Creator / model fee (₹)',inp('creatorFee',s.creatorFee,'number','min="0"'))}${fld('Videographer fee (₹)',inp('videographerFee',s.videographerFee,'number','min="0"'))}${fld('Other costs (₹)',inp('otherCost',s.otherCost,'number','min="0"'))}
+  ${fld('Advance paid (₹)',inp('advancePaid',s.advancePaid,'number','min="0"'))}${fld('Payment status',sel('paymentStatus',PAY,s.paymentStatus))}${fld('Paid on',inp('paidDate',s.paidDate,'date'))}
+  ${fld('Payment notes',inp('paymentNotes',s.paymentNotes,'text','placeholder="UPI ID, invoice no."'),'full')}
+  <div class="sec">Delivery</div>
+  ${fld('Google Drive folder for final videos',inp('driveLink',s.driveLink,'url','placeholder="https://drive.google.com/drive/folders/…"'),'full')}
+  ${fld('Other notes',area('notes',s.notes,2),'full')}
+  </div><footer><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn pri" type="submit">${id?'Save changes':'Create shoot'}</button></footer></form>`,true);pickRefresh()}
+function dlHint(evId){const e=S.events.get(evId);return e?`leave blank for ${fmtD(adDeadline(e))}`:'optional'}
+
+/* ================= REVIEW ================= */
+function vReview(){const tab=S.ui.review.tab,all=allVideos(),counts={};Object.keys(VSTAT).forEach(k=>counts[k]=all.filter(x=>(x.v.status||'review')===k).length);
+  const list=all.filter(x=>tab==='all'||(x.v.status||'review')===tab).sort((a,b)=>(b.v.at||0)-(a.v.at||0));
+  return`<header class="vh"><div><h1>Video review</h1><p class="sub">${canApprove()?'Watch each edit, then approve it, ask for changes or reject it. Approved videos go into the shoot\'s Drive folder.':'Your uploads and their review status. Admins and approvers make the final call.'}</p></div></header>
+  <div class="seg rev-tabs" role="group" aria-label="Filter videos">${[['review','In review'],['changes','Changes requested'],['approved','Approved'],['rejected','Rejected'],['all','All']].map(([k,l])=>`<button data-act="revTab" data-k="${k}" class="${tab===k?'on':''}">${l}${k!=='all'?` (${counts[k]})`:''}</button>`).join('')}</div>
+  ${list.length?`<div class="vgrid">${list.map(x=>videoCard(x.s,x.v,true)).join('')}</div>`:`<div class="emptybig"><h3>${tab==='review'?'Nothing waiting for review':'No videos here'}</h3><p>Videos uploaded inside a shoot appear here.</p><button class="btn" data-act="nav" data-view="shoots">Go to shoot planner</button></div>`}`}
+
+/* ================= TEAM & SETTINGS ================= */
+function vTeam(){const list=users().filter(u=>!u.removed);
+  return`<header class="vh"><div><h1>Team & logins</h1><p class="sub">Admins manage logins and settings and can delete items. Staff add and update posts, events and shoots. Turn on "Can approve" for staff who sign off videos.</p></div><div class="vh-act"><button class="btn pri" data-act="addUser">${ic('plus')}Add login</button></div></header>
+  <section class="panel" style="margin-bottom:16px"><div class="tblwrap"><table class="tbl"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Can approve videos</th><th>Status</th><th></th></tr></thead><tbody>
+  ${list.map(u=>`<tr><td><div style="display:flex;gap:10px;align-items:center"><span class="av" style="width:28px;height:28px;font-size:12px">${h(initials(u.name))}</span><b>${h(u.name)}</b>${u.id===S.me.id?'<span class="chip">You</span>':''}</div></td><td>${h(u.email)}</td>
+    <td>${u.id===S.me.id?'Admin':`<select data-change="uRole" data-id="${u.id}" aria-label="Role" style="width:auto">${[['admin','Admin'],['staff','Staff']].map(([v,l])=>`<option value="${v}" ${u.role===v?'selected':''}>${l}</option>`).join('')}</select>`}</td>
+    <td>${u.role==='admin'?'<span class="muted">Always</span>':`<label class="drivechk"><input type="checkbox" data-change="uApprove" data-id="${u.id}" ${u.canApprove?'checked':''}>Can approve</label>`}</td>
+    <td><span class="chip ${u.active===false?'s-bad':'s-ok'}">${u.active===false?'Deactivated':'Active'}</span></td>
+    <td style="white-space:nowrap"><button class="btn sm" data-act="resetPw" data-id="${u.id}">${ic('key',14)}Send reset email</button> ${u.id!==S.me.id?`<button class="btn sm ghost" data-act="toggleUser" data-id="${u.id}">${u.active===false?'Activate':'Deactivate'}</button> <button class="btn sm ghost danger" data-act="delUser" data-id="${u.id}" aria-label="Remove from team">${ic('trash',14)}</button>`:''}</td></tr>`).join('')}</tbody></table></div></section>
+  <section class="panel"><div class="ph"><h2>Activity log</h2><span class="hint">Last ${Math.min(S.log.length,60)} changes</span></div>${S.log.length?`<ul class="act">${S.log.slice(0,60).map(e=>`<li><b>${h(userName(e.by))}</b> ${h(e.text)}<time>${ago(e.t)}</time></li>`).join('')}</ul>`:'<p class="empty">No activity yet.</p>'}</section>`}
+function vSettings(){const c=cfg();
+  return`<header class="vh"><div><h1>Settings</h1><p class="sub">Accounts, deadlines and hashtag sets for the whole team.</p></div></header>
+  <form data-form="settings" class="panel" style="margin-bottom:16px"><div class="ph"><h2>Instagram accounts</h2><button type="button" class="btn sm" data-act="addAccount">${ic('plus',14)}Add account</button></div>
+  <div class="tblwrap"><table class="tbl"><thead><tr><th>Handle</th><th>Colour</th><th>Posts per day</th><th>Hashtag set</th><th></th></tr></thead><tbody>
+  ${c.accounts.map(a=>`<tr><td><input name="h_${h(a.id)}" type="text" value="${h(a.handle)}" required aria-label="Handle" style="min-width:150px"></td><td><input name="c_${h(a.id)}" type="color" value="${h(a.color)}" aria-label="Colour" style="width:48px;height:36px;padding:2px;border:1px solid var(--line2);border-radius:8px;background:var(--surface)"></td>
+    <td><input name="t_${h(a.id)}" type="number" min="1" max="20" value="${num(a.target)||3}" aria-label="Posts per day" style="width:80px"></td><td><textarea name="g_${h(a.id)}" rows="2" aria-label="Hashtag set" style="min-width:260px" placeholder="#hashtags used on most posts">${h((c.hashtags||{})[a.id]||'')}</textarea></td>
+    <td>${c.accounts.length>1?`<button type="button" class="btn sm ghost danger" data-act="rmAccount" data-id="${h(a.id)}" aria-label="Remove account">${ic('trash',14)}</button>`:''}</td></tr>`).join('')}</tbody></table></div>
+  <div class="ph" style="margin-top:20px"><h2>Deadlines</h2></div>
+  <div class="mbody grid2" style="padding:0">${fld('Ad videos ready this many days before an event',inp('leadDays',c.leadDays,'number','min="0" max="120"'))}${fld('Editing buffer: shoot this many days before the ad deadline',inp('editDays',c.editDays,'number','min="0" max="60"'))}</div>
+  <div style="margin-top:16px;display:flex;justify-content:flex-end"><button class="btn pri" type="submit">Save settings</button></div></form>
+  <section class="panel"><div class="ph"><h2>Data & storage</h2></div><p class="note" style="margin-bottom:12px">Export a backup any time. Photos and videos stay in your Google Drive; only their links are saved here.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="exportPosts">${ic('down')}Posts CSV</button><button class="btn" data-act="exportShoots">${ic('down')}Shoots & payments CSV</button></div></section>`}
+
+/* ================= actions ================= */
+function refreshDraftLink(){const i=$('#draft-link');if(i)i.value=''}
+async function updShoot(sid,fn,logText){const cur=S.shoots.get(sid);if(!cur)return;const s=clone(cur);fn(s);autoStage(s);await save('shoots',sid,s);if(logText)logAct(logText);render(true)}
+function autoStage(s){const n=num(s.numVideos),vids=s.videos||[],ap=vids.filter(v=>v.status==='approved'),i=stageIdx(s.stage||'planning');
+  if(vids.some(v=>v.status==='review')&&i<4)s.stage='review';
+  if(n&&ap.length>=n&&i<5)s.stage='approved';
+  if(n&&ap.length>=n&&ap.every(v=>v.drive)&&stageIdx(s.stage)<6)s.stage='delivered'}
+const findV=(s,vid)=>(s.videos||[]).find(v=>v.id===vid);
+async function setPostStatus(id,status){const p=clone(S.posts.get(id));if(!p)return;p.status=status;if(status==='uploaded'){p.uploadedBy=S.me.id;p.uploadedAt=Date.now()}else{p.uploadedBy=null;p.uploadedAt=null}
+  await save('posts',id,p);logAct(`marked a @${(acc(p.account)||{}).handle} ${p.type.toLowerCase()} for ${fmtD(p.date)} as ${(POST_STATUS.find(x=>x[0]===status)||[])[1]}`);render(true)}
+function csvCell(v){v=String(v??'');return/[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
+const csv=rows=>'\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\n');
+async function reviewAct(el,status){const s=S.shoots.get(el.dataset.sid),v=s&&findV(s,el.dataset.vid);if(!v)return;
+  const box=$('#vcm-'+v.id)||$('#vc-'+v.id),text=box?box.value.trim():'';if(status==='changes'&&!text){toast('Type what needs to change in the feedback box first.','err');if(box)box.focus();return}if(el.dataset.close)closeModal();
+  await updShoot(s.id,x=>{const vv=findV(x,v.id);vv.status=status;vv.reviewedBy=S.me.id;vv.reviewedAt=Date.now();vv.comments=vv.comments||[];vv.comments.push({by:S.me.id,at:Date.now(),text:VSTAT[status]+(text?': '+text:''),sys:!text})},`${status==='approved'?'approved':status==='rejected'?'rejected':'requested changes on'} "${v.name}" (${s.title})`);
+  const b=$('#vc-'+v.id);if(b)b.value='';toast(status==='approved'?'Video approved':status==='rejected'?'Video rejected':'Changes requested',status==='approved'?'ok':'')}
+
+const A={
+  nav:el=>{go(el.dataset.view);if(el.dataset.view==='posts'&&S.ui.posts.mode==='list'&&!S.ui.posts.q){setTimeout(()=>{const x=document.getElementById('day-'+today());if(x&&x.getBoundingClientRect().top>innerHeight*.6)x.scrollIntoView({behavior:'smooth'})},80)}},
+  acct:el=>{S.acct=el.dataset.id;try{localStorage.setItem('cd_acct',S.acct)}catch(e){}render(true)},
+  theme:()=>{const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('cd_theme',r.dataset.theme)}catch(e){}},
+  logout:async()=>{if(S.auth)await FB.signOut(S.auth);S.screen=null;S.view='home';render(true)},
+  closeModal:()=>closeModal(),
+  confirmYes:async()=>{const f=S.confirmFn;S.confirmFn=null;closeModal();if(f)await f()},
+  expand:el=>el.classList.toggle('open'),
+  newPost:el=>openPostEditor(null,{date:el.dataset.date||today(),...(el.dataset.acct?{account:el.dataset.acct}:{})}),
+  editPost:el=>{closeModal();openPostEditor(el.dataset.id)},
+  dupPost:el=>{const p=clone(S.posts.get(el.dataset.id));const other=accounts().find(a=>a.id!==p.account);openPostEditor(null,{...p,id:undefined,status:'pending',postUrl:'',uploadedBy:null,uploadedAt:null,account:other?other.id:p.account});toast(`Copied. Pick the account and date, then save.`)},
+  delPost:el=>confirmBox('Delete this post?','The post and its caption will be removed for everyone. Uploaded media files stay in storage.','Delete post',async()=>{const p=S.posts.get(el.dataset.id);await remove('posts',el.dataset.id);logAct(`deleted a post for ${p?fmtD(p.date):''}`);render(true);toast('Post deleted')}),
+  markUploaded:async el=>{if(el.dataset.close)closeModal();await setPostStatus(el.dataset.id,'uploaded');toast('Marked uploaded','ok')},
+  viewPost:el=>{const p=S.posts.get(el.dataset.id);if(p)openViewer(p)},
+  copyCaption:async el=>{const p=S.posts.get(el.dataset.id);if(!p)return;const t=fullCaption(p);if(!t){toast('This post has no caption yet.','err');return}
+    if(await copyText(t))toast('Caption copied','ok');else{openViewer(p);const b=$('#capbox');if(b){const r=document.createRange();r.selectNodeContents(b);const s=getSelection();s.removeAllRanges();s.addRange(r)}toast('Copy blocked here. The caption is selected: press copy on your device.','err')}},
+  dlCaption:async el=>{const p=S.posts.get(el.dataset.id);if(p)await saveFile(`${S.viewBase||'caption'}_caption.txt`,fullCaption(p)||'')},
+  insertTags:el=>{const ta=$('#modal textarea[name=hashtags]');const set=(cfg().hashtags||{})[el.dataset.id]||'';if(ta){ta.value=(ta.value.trim()?ta.value.trim()+' ':'')+set.trim();ta.dispatchEvent(new Event('input',{bubbles:true}))}},
+  rmDraftMedia:el=>{if(S.draft){S.draft.media.splice(+el.dataset.i,1);renderDraftMedia()}},
+  addDraftLink:()=>{const i=$('#draft-link');const links=String(i&&i.value||'').split(/\s+/).map(safeUrl).filter(Boolean);if(!links.length){toast('Paste a full link starting with https://','err');return}links.forEach(l=>S.draft.media.push({link:l}));i.value='';renderDraftMedia()},
+  loadOlder:()=>ensurePostsFrom(addDays(S.postsFrom,-90)),
+  forgotPw:async el=>{const f=el.closest('form'),em=f&&f.elements.email.value.trim();const e=$('#auth-err');if(!em){e.textContent='Type your email above first, then tap Forgot password.';return}
+    try{await FB.sendPasswordResetEmail(S.auth,em);e.textContent='';toast('If that email is on the team, a reset link is on its way. Check spam too.','ok')}catch(err){e.textContent=authErr(err)}},
+  postsOverdue:()=>{S.ui.posts.status='overdue';S.ui.posts.q='';go('posts')},
+  goPostsDate:el=>{const d=el.dataset.date;ensurePostsFrom(weekStart(d));Object.assign(S.ui.posts,{mode:'list',anchor:weekStart(d),q:'',status:S.ui.posts.status==='overdue'?'all':S.ui.posts.status});go('posts');setTimeout(()=>{const x=document.getElementById('day-'+d);if(x)x.scrollIntoView({behavior:'smooth'})},60)},
+  jumpDay:el=>{const x=document.getElementById('day-'+el.dataset.date);if(x)x.scrollIntoView({behavior:'smooth'})},
+  pMode:el=>{S.ui.posts.mode=el.dataset.m;render(true)},
+  pWeek:el=>{S.ui.posts.anchor=addDays(S.ui.posts.anchor,+el.dataset.d);ensurePostsFrom(S.ui.posts.anchor);render(true)},
+  pMonth:el=>{S.ui.posts.month=addMonths(S.ui.posts.month,+el.dataset.d);ensurePostsFrom(weekStart(S.ui.posts.month));render(true)},
+  pToday:()=>{S.ui.posts.anchor=weekStart(today());S.ui.posts.month=monthFirst(today());render(true)},
+  eMonth:el=>{S.ui.events.month=addMonths(S.ui.events.month,+el.dataset.d);render(true)},
+  eToday:()=>{S.ui.events.month=monthFirst(today());render(true)},
+  evPast:()=>{S.ui.events.past=!S.ui.events.past;render(true)},
+  newEvent:()=>openEventEditor(null),
+  editEvent:el=>{closeModal();openEventEditor(el.dataset.id)},
+  viewEvent:el=>openEventView(el.dataset.id),
+  delEvent:el=>{const e=S.events.get(el.dataset.id);confirmBox(`Delete ${e?e.name:'event'}?`,'Shoots and posts linked to it stay, but lose their event link and deadline.','Delete event',async()=>{await remove('events',el.dataset.id);logAct(`deleted event "${e?e.name:''}"`);render(true);toast('Event deleted')})},
+  shootForEvent:el=>{const e=S.events.get(el.dataset.id);closeModal();openShootEditor(null,{eventId:e.id,title:e.name+' ads',account:(e.accounts||[]).length===1?e.accounts[0]:'both',shootDate:evInfo(e).shootBy})},
+  newShoot:()=>openShootEditor(null),
+  editShoot:el=>openShootEditor(el.dataset.id),
+  openShoot:el=>{closeModal();go('shoot',el.dataset.id)},
+  dupShoot:el=>{const s=clone(S.shoots.get(el.dataset.id));['id','videos','comments','checklist','shootDate','deadline','stage','paymentStatus','advancePaid','paidDate'].forEach(k=>delete s[k]);s.title+=' (copy)';openShootEditor(null,s)},
+  delShoot:el=>{const s=S.shoots.get(el.dataset.id);confirmBox(`Delete ${s?s.title:'shoot'}?`,'All details, comments and video review history for this shoot will be removed for everyone.','Delete shoot',async()=>{await remove('shoots',el.dataset.id);logAct(`deleted shoot "${s?s.title:''}"`);go('shoots');toast('Shoot deleted')})},
+  setStage:el=>{const k=el.dataset.stage;updShoot(el.dataset.id,s=>{s.stage=k;s.comments=s.comments||[];s.comments.push({by:S.me.id,at:Date.now(),text:'Moved to '+STAGES.find(x=>x[0]===k)[1],sys:true})},`moved "${(S.shoots.get(el.dataset.id)||{}).title}" to ${STAGES.find(x=>x[0]===k)[1]}`)},
+  toggleCheck:el=>updShoot(el.dataset.id,s=>{s.checklist=s.checklist||{};s.checklist[el.dataset.k]=!s.checklist[el.dataset.k]}),
+  shootComment:el=>{const b=$('#sc-'+el.dataset.id),t=b&&b.value.trim();if(!t)return;b.value='';updShoot(el.dataset.id,s=>{s.comments=s.comments||[];s.comments.push({by:S.me.id,at:Date.now(),text:t})},`commented on "${(S.shoots.get(el.dataset.id)||{}).title}"`)},
+  addVideoLink:el=>{const sid=el.dataset.id,n=$('#vln-'+sid),u=$('#vlu-'+sid),link=safeUrl(u&&u.value);if(!link){toast('Paste a full link starting with https://','err');return}const name=(n&&n.value.trim())||'Video '+(((S.shoots.get(sid)||{}).videos||[]).length+1);
+    n.value='';u.value='';updShoot(sid,s=>{s.videos=s.videos||[];s.videos.push({id:uid(),name,link,type:'link',version:1,status:'review',by:S.me.id,at:Date.now(),comments:[],drive:false,history:[]})},`added video link "${name}" to ${(S.shoots.get(sid)||{}).title}`)},
+  vApprove:el=>{if(canApprove())reviewAct(el,'approved')},
+  vChanges:el=>{if(canApprove())reviewAct(el,'changes')},
+  vReject:el=>{if(canApprove())reviewAct(el,'rejected')},
+  vComment:el=>{const b=$('#vc-'+el.dataset.vid),t=b&&b.value.trim();if(!t)return;b.value='';updShoot(el.dataset.sid,s=>{const v=findV(s,el.dataset.vid);v.comments=v.comments||[];v.comments.push({by:S.me.id,at:Date.now(),text:t})})},
+  playVideo:el=>{const s=S.shoots.get(el.dataset.sid),v=s&&findV(s,el.dataset.vid);if(!v)return;
+    openModal(`<div class="mform"><header><h2>${h(v.name)} <span class="tag">v${v.version||1}</span></h2><button class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header>
+    <div class="viewer">${frameHtml(v.link,v.name)}<div class="vrow"><span class="note">${h(s.title)}</span>${linkBtns(v.link)}</div><p class="note">${DRIVE_HINT} New uploads can take a few minutes before Drive can play them.</p>
+    ${canApprove()?`<div class="cin"><input type="text" id="vcm-${v.id}" placeholder="Feedback for the editor (needed for Request changes)" aria-label="Feedback"></div>`:''}</div>
+    <footer>${reviewBtns(s,v,true)}<button class="btn" data-act="closeModal">Close</button></footer></div>`,true)},
+  vRevisionOpen:el=>{const s=S.shoots.get(el.dataset.sid),v=s&&findV(s,el.dataset.vid);if(!v)return;
+    openModal(`<form data-form="vrev" class="mform" data-sid="${s.id}" data-vid="${v.id}"><header><h2>New version of ${h(v.name)}</h2><button type="button" class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header><div class="mbody">${fld('Google Drive link to version '+((v.version||1)+1),inp('link','','text','required placeholder="https://drive.google.com/file/d/…"'))}<p class="note">The old version stays in the history and this one goes back to review.</p></div><footer><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn pri" type="submit">Add version</button></footer></form>`)},
+  vDelete:el=>{const s=S.shoots.get(el.dataset.sid),v=s&&findV(s,el.dataset.vid);if(!v)return;confirmBox(`Delete "${v.name}"?`,'The video and its feedback are removed for everyone.','Delete video',async()=>{await updShoot(s.id,x=>{x.videos=(x.videos||[]).filter(y=>y.id!==v.id)},`deleted video "${v.name}" from ${s.title}`);toast('Video deleted')})},
+  revTab:el=>{S.ui.review.tab=el.dataset.k;render(true)},
+  myPassword:()=>{if(S.mode==='local'){toast('Password changes work once the app is live.');return}openModal(`<form data-form="mypw" class="mform"><header><h2>Change your password</h2><button type="button" class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header><div class="mbody">${fld('Current password',inp('cur','','password','required autocomplete="current-password"'))}${fld('New password <em>at least 6 characters</em>',inp('pw','','password','required minlength="6" autocomplete="new-password"'))}<p class="err" id="pw-err"></p></div><footer><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn pri" type="submit">Change password</button></footer></form>`)},
+  addUser:()=>openModal(`<form data-form="user" class="mform"><header><h2>Add a login</h2><button type="button" class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header><div class="mbody grid2">${fld('Full name',inp('name','','text','required maxlength="60"'))}${fld('Email',inp('email','','email','required'))}${fld('Temporary password <em>6+ characters</em>',inp('password','','text','required minlength="6"'))}${fld('Role',sel('role',[['staff','Staff'],['admin','Admin']],'staff'))}${fdiv('Video approval',checks('canApprove',[['yes','Can approve videos']],[]),'full')}<p class="note full">Share the email and temporary password with them privately. They can change it after signing in, or use "Forgot password" on the sign-in page.</p><p class="err full" id="user-err"></p></div><footer><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn pri" type="submit">Add login</button></footer></form>`),
+  resetPw:async el=>{const u=users().find(x=>x.id===el.dataset.id);if(!u)return;if(S.mode==='local'){toast('Reset emails work once the app is live.');return}
+    try{await FB.sendPasswordResetEmail(S.auth,u.email);logAct(`sent a password reset email to ${u.name}`);toast(`Reset link sent to ${u.email}. Ask them to check spam too.`,'ok')}catch(err){toast(authErr(err),'err')}},
+  toggleUser:async el=>{const u=users().find(x=>x.id===el.dataset.id);if(!u)return;const on=u.active===false;await saveUser(u.id,{active:on});logAct(`${on?'activated':'deactivated'} ${u.name}'s login`);render(true)},
+  delUser:el=>{const u=users().find(x=>x.id===el.dataset.id);confirmBox(`Remove ${u.name} from the team?`,'They lose access right away. Their past activity stays. To bring them back, use Add login with the same email.','Remove',async()=>{await saveUser(u.id,{active:false,removed:true});logAct(`removed ${u.name} from the team`);render(true)})},
+  addAccount:async()=>{const c=clone(cfg());const id='a'+uid().slice(-6);c.accounts.push({id,handle:'new.account',color:'#0f9d8a',target:3});await saveCfg('settings',c);logAct('added an Instagram account');render(true)},
+  rmAccount:el=>{const a=acc(el.dataset.id),n=[...S.posts.values()].filter(p=>p.account===a.id).length;if(n){toast(`@${a.handle} still has ${n} posts. Delete or move them first.`,'err');return}
+    confirmBox(`Remove @${a.handle}?`,'The account disappears from the tracker for everyone.','Remove account',async()=>{const c=clone(cfg());c.accounts=c.accounts.filter(x=>x.id!==a.id);await saveCfg('settings',c);if(S.acct===a.id)S.acct='all';logAct(`removed @${a.handle}`);render(true)})},
+  exportPosts:async()=>{const rows=[['Date','Time','Account','Type','Status','Caption','Hashtags','Assigned to','Uploaded by','Event','Instagram link','Notes']];
+    [...S.posts.values()].filter(inAcctPost).sort((a,b)=>(a.date+(a.time||''))<(b.date+(b.time||''))?-1:1).forEach(p=>rows.push([p.date,p.time,'@'+((acc(p.account)||{}).handle||''),p.type,(POST_STATUS.find(x=>x[0]===p.status)||[])[1],p.caption,p.hashtags,userName(p.assignee),p.uploadedBy?userName(p.uploadedBy):'',(S.events.get(p.eventId)||{}).name||'',p.postUrl,p.notes]));
+    await saveFile(`posts_${today()}.csv`,csv(rows))},
+  exportShoots:async()=>{const rows=[['Shoot','Account','Event','Stage','Shoot date','Due date','Videos planned','Approved','Location','Videographer','Model','Model type','Creator fee','Videographer fee','Other','Total','Paid','Balance','Payment status','Drive folder']];
+    shootsList().forEach(s=>{const b=budget(s);rows.push([s.title,acctLabel(s.account),(S.events.get(s.eventId)||{}).name||'',(STAGES.find(x=>x[0]===s.stage)||STAGES[0])[1],s.shootDate,shootDeadline(s)||'',num(s.numVideos),approvedCount(s),s.location,shootVgName(s),shootCreatorNames(s),s.modelGender,num(s.creatorFee),num(s.videographerFee),num(s.otherCost),b.total,b.paid,b.balance,(PAY.find(x=>x[0]===s.paymentStatus)||PAY[0])[1],s.driveLink])});
+    await saveFile(`shoots_${today()}.csv`,csv(rows))},
+};
+const C={
+  postStatus:el=>setPostStatus(el.dataset.id,el.value),
+  pStatus:el=>{S.ui.posts.status=el.value;render(true)},
+  pType:el=>{S.ui.posts.type=el.value;render(true)},
+  sEvent:el=>{S.ui.shoots.event=el.value;render(true)},
+  shootEvent:el=>{const x=$('#dlhint');if(x)x.textContent=dlHint(el.value)},
+  postAcct:()=>{},
+  vDrive:el=>{updShoot(el.dataset.sid,s=>{const v=findV(s,el.dataset.vid);v.drive=el.checked;v.driveBy=el.checked?S.me.id:null},el.checked?`saved "${(findV(S.shoots.get(el.dataset.sid)||{},el.dataset.vid)||{}).name}" to Drive`:'')},
+  uRole:async el=>{const u=users().find(x=>x.id===el.dataset.id);if(u.role==='admin'&&el.value!=='admin'&&users().filter(x=>x.role==='admin'&&x.active!==false&&!x.removed).length<2){toast('Keep at least one active admin.','err');render(true);return}await saveUser(u.id,{role:el.value});logAct(`changed ${u.name}'s role to ${el.value}`);render(true)},
+  uApprove:async el=>{const u=users().find(x=>x.id===el.dataset.id);await saveUser(u.id,{canApprove:el.checked});logAct(`${el.checked?'gave':'removed'} video approval ${el.checked?'to':'from'} ${u.name}`);render(true)}
+};
+const IN={
+  pSearch:el=>{S.ui.posts.q=el.value;clearTimeout(S.qt);S.qt=setTimeout(()=>render(true),200)},
+  sSearch:el=>{S.ui.shoots.q=el.value;clearTimeout(S.qt);S.qt=setTimeout(()=>render(true),200)},
+  capCount:el=>{const x=$('#capcount');if(x)x.textContent=el.value.length+'/2200'},
+  tagCount:el=>{const x=$('#tagcount'),n=(el.value.match(/#\w+/g)||[]).length;if(x){x.textContent=n+'/30';x.style.color=n>30?'var(--bad)':''}}
+};
+const F={
+  setup:async f=>{const o=formObj(f),e=$('#auth-err');if(S.meta&&S.meta.owner){S.screen=null;render(true);return}S.settingUp=true;
+    try{let cred;try{cred=await FB.createUserWithEmailAndPassword(S.auth,o.email,o.password)}catch(err){if(String(err.code).includes('email-already-in-use'))cred=await FB.signInWithEmailAndPassword(S.auth,o.email,o.password);else throw err}
+      await finishSetup(cred.user.uid,o.name,o.email);S.me={id:cred.user.uid,name:o.name,role:'admin'};logAct('set up the tracker')}
+    catch(err){e.textContent=authErr(err)}finally{S.settingUp=false;S.screen=null;scheduleRender()}},
+  finish:async f=>{const o=formObj(f),e=$('#auth-err'),u=S.auth.currentUser;S.settingUp=true;try{await finishSetup(u.uid,o.name,u.email);logAct('set up the tracker')}catch(err){e.textContent=authErr(err)}finally{S.settingUp=false;S.screen=null;scheduleRender()}},
+  login:async f=>{const o=formObj(f),e=$('#auth-err');try{await FB.signInWithEmailAndPassword(S.auth,o.email.trim(),o.password)}catch(err){e.textContent=authErr(err)}},
+  mypw:async f=>{const o=formObj(f),u=S.auth.currentUser;try{await FB.reauthenticateWithCredential(u,FB.EmailAuthProvider.credential(u.email,o.cur));await FB.updatePassword(u,o.pw);closeModal();toast('Password changed','ok')}catch(err){$('#pw-err').textContent=authErr(err)}},
+  user:async f=>{const o=formObj(f),em=o.email.trim().toLowerCase(),role=o.role,ca=role==='admin'||(o.canApprove||[]).length>0,ex=users().find(x=>(x.email||'')===em);
+    if(ex){await saveUser(ex.id,{name:o.name,role,canApprove:ca,active:true,removed:false});logAct(`re-added ${o.name}`);closeModal();render(true);toast(`${o.name} is back on the team with their old password. Use "Send reset email" if they forgot it.`,'ok');return}
+    try{const nid=S.mode==='local'?'u'+uid():await createMember(em,o.password);await saveUser(nid,{name:o.name,email:em,role,canApprove:ca,active:true,createdAt:Date.now()});logAct(`added a login for ${o.name}`);closeModal();render(true);toast(`Login created for ${o.name}`,'ok')}
+    catch(err){$('#user-err').textContent=String(err.code||'').startsWith('auth/')?authErr(err)+(String(err.code).includes('email-already')?' Ask them to sign in once; they\'ll see a "No access" screen. Then add them again here.':''):dbErrMsg(err)}},
+  vrev:async f=>{const link=safeUrl(f.elements.link.value);if(!link){toast('Paste a full link starting with https://','err');return}const sid=f.dataset.sid,vid=f.dataset.vid,v=findV(S.shoots.get(sid)||{},vid);if(!v)return;
+    await updShoot(sid,x=>{const vv=findV(x,vid);vv.history=vv.history||[];vv.history.push({link:vv.link||null,version:vv.version||1,status:vv.status});vv.link=link;vv.version=(vv.version||1)+1;vv.status='review';vv.by=S.me.id;vv.at=Date.now();vv.reviewedBy=null;vv.drive=false;vv.comments=vv.comments||[];vv.comments.push({by:S.me.id,at:Date.now(),text:`Added version ${vv.version}`,sys:true})},`added v${(v.version||1)+1} of "${v.name}"`);closeModal();toast('New version added for review','ok')},
+  post:async f=>{const o=formObj(f),id=S.draft.id,prev=id?S.posts.get(id):null;
+    const p={...(prev?clone(prev):{createdBy:S.me.id,createdAt:Date.now()}),account:o.account,date:o.date,time:o.time,type:o.type,status:o.status,assignee:o.assignee,caption:o.caption,hashtags:o.hashtags,eventId:o.eventId,postUrl:o.postUrl,notes:o.notes,media:S.draft.media.map(m=>({link:m.link}))};
+    if(o.status==='uploaded'&&(!prev||prev.status!=='uploaded')){p.uploadedBy=S.me.id;p.uploadedAt=Date.now()}if(o.status!=='uploaded'){p.uploadedBy=null;p.uploadedAt=null}
+    const nid=id||uid();await save('posts',nid,p);logAct(`${id?'updated':'added'} a @${(acc(p.account)||{}).handle} ${p.type.toLowerCase()} for ${fmtD(p.date)}`);closeModal();render(true);toast(id?'Post saved':'Post added','ok')},
+  event:async f=>{const o=formObj(f),id=f.dataset.id,prev=id?S.events.get(id):null;if(o.endDate&&o.endDate<o.date)o.endDate='';
+    const e={...(prev?clone(prev):{createdBy:S.me.id,createdAt:Date.now()}),name:o.name,date:o.date,endDate:o.endDate,type:o.type,priority:o.priority,accounts:o.accounts,leadDays:o.leadDays===''?'':num(o.leadDays),offer:o.offer,notes:o.notes};
+    await save('events',id||uid(),e);logAct(`${id?'updated':'added'} event "${e.name}" on ${fmtD(e.date)}`);closeModal();render(true);toast(`${e.name}: ad videos due ${fmtD(adDeadline(e))}`,'ok')},
+  shoot:async f=>{const o=formObj(f),id=f.dataset.id,prev=id?S.shoots.get(id):null;
+    const s={...(prev?clone(prev):{createdBy:S.me.id,createdAt:Date.now(),stage:'planning',videos:[],comments:[],checklist:{}}),...o};
+    ['numVideos','creatorFee','videographerFee','otherCost','advancePaid'].forEach(k=>s[k]=o[k]===''?'':num(o[k]));
+    const nid=id||uid();await save('shoots',nid,s);logAct(`${id?'updated':'planned'} shoot "${s.title}"`);closeModal();if(!id)go('shoot',nid);else render(true);toast(id?'Shoot saved':'Shoot created','ok')},
+  settings:async f=>{const o=formObj(f),c=clone(cfg());c.accounts=c.accounts.map(a=>({...a,handle:(o['h_'+a.id]||a.handle).replace(/^@/,''),color:o['c_'+a.id]||a.color,target:num(o['t_'+a.id])||3}));
+    c.hashtags={};c.accounts.forEach(a=>c.hashtags[a.id]=o['g_'+a.id]||'');c.leadDays=num(o.leadDays);c.editDays=num(o.editDays);await saveCfg('settings',c);logAct('updated settings');render(true);toast('Settings saved','ok')}
+};
+
+/* ================= TALENT & CREW ================= */
+const BEST_FOR=['UGC','Music video','Voice-over','Model lookbook','Unboxing','Testimonial','Product demo','Tutorial','Dance / trends','Comedy / skit','Bridal / occasion'];
+const CATEGORIES=['Ethnic wear','Western wear','Jewellery','Beauty & skincare','Makeup','Haircare','Lifestyle','Tech & gadgets','Home','Kids','Fitness'];
+const SKIN_TONES=['','Fair','Light','Wheatish','Medium','Dusky','Deep'];
+const SKIN_TYPES=['','Normal','Oily','Dry','Combination','Sensitive'];
+const HAIR=['','Short','Shoulder length','Long','Curly','Wavy','Straight'];
+const SIZES=['','XS','S','M','L','XL','XXL','3XL'];
+const LANGS=['Hindi','English','Marathi','Gujarati','Punjabi','Bengali','Tamil','Telugu','Kannada','Malayalam'];
+const AVAIL=[['available','Available'],['busy','Busy / booked'],['hold','On hold'],['dnb','Do not book']];
+const CREW_ROLES=['Videographer','Editor','Photographer','Stylist','Makeup artist','Assistant'];
+const CREW_SKILLS=['UGC','Music video','Product shoot','Studio','Outdoor','Drone shots','Editing','Colour grading','Motion graphics'];
+const EQUIP=['Cinema camera','Mirrorless camera','iPhone / phone','Gimbal','Lights','Mic / audio','Drone','Studio space','Backdrops & props'];
+S.creators=new Map();S.crew=new Map();
+S.ui.talent={tab:'creators',q:'',gender:'all',best:'all',cat:'all',avail:'all',role:'all',sort:'name'};
+
+const igHandle=v=>{const x=String(v||'').trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,'').replace(/^@/,'').replace(/[/?#].*$/,'');return x?'@'+x:''};
+const igUrl=v=>{const x=igHandle(v).slice(1);return x?'https://instagram.com/'+encodeURIComponent(x):''};
+const waUrl=p=>{let d=String(p||'').replace(/\D/g,'');if(d.length===10)d='91'+d;return d?'https://wa.me/'+d:''};
+const creatorsOf=s=>(s.creatorIds||[]).map(id=>S.creators.get(id)).filter(Boolean);
+const shootVgName=s=>(S.crew.get(s.videographerId)||{}).name||s.videographer||'';
+const shootCreatorNames=s=>creatorsOf(s).map(c=>c.name).join(', ')||s.model||'';
+const inShoot=(s,id)=>(s.creatorIds||[]).includes(id)||s.videographerId===id||s.editorId===id||(s.crewIds||[]).includes(id);
+const personShoots=id=>[...S.shoots.values()].filter(s=>inShoot(s,id)).sort((a,b)=>(b.shootDate||'')>(a.shootDate||'')?1:-1);
+function ratingOf(id){const r=[...S.shoots.values()].map(s=>(s.ratings||{})[id]).filter(Boolean);return r.length?{avg:r.reduce((a,b)=>a+b,0)/r.length,n:r.length}:null}
+const starTxt=r=>r?`<span class="stars" aria-label="Rated ${r.avg.toFixed(1)} out of 5">${'★'.repeat(Math.round(r.avg))}${'☆'.repeat(5-Math.round(r.avg))}</span> ${r.avg.toFixed(1)}`:'';
+const bookedOn=(id,date,except)=>date?[...S.shoots.values()].find(s=>s.id!==except&&s.shootDate===date&&inShoot(s,id)):null;
+const availChip=k=>{const a=AVAIL.find(x=>x[0]===k)||AVAIL[0];return`<span class="chip ${k==='available'||!k?'s-ok':k==='dnb'?'s-bad':'s-risk'}">${a[1]}</span>`};
+const photoEl=p=>p&&p.photoLink&&thumbUrl(p.photoLink)?`<img src="${h(thumbUrl(p.photoLink,300))}" alt="" loading="lazy" referrerpolicy="no-referrer" data-fb="av" data-alt="${h(initials(p.name))}">`:h(initials(p&&p.name));
+const creatorRates=c=>[c.ratePerVideo?money(c.ratePerVideo)+' / video':'',c.rateDay?money(c.rateDay)+' / day':'',!c.rateDay&&c.rateHalfDay?money(c.rateHalfDay)+' / half day':''].filter(Boolean).join(', ');
+const crewRates=c=>[c.rateDay?money(c.rateDay)+' / day':'',c.rateHalfDay?money(c.rateHalfDay)+' / half day':'',c.ratePerVideo?money(c.ratePerVideo)+' / edit':''].filter(Boolean).join(', ');
+const creatorText=c=>[c.name,c.handle,c.location,c.area,c.skinTone,c.skinType,c.gender,(c.bestFor||[]).join(' '),(c.categories||[]).join(' '),(c.languages||[]).join(' '),c.notes].join(' ').toLowerCase();
+const kv=(l,v)=>v===''||v==null||(Array.isArray(v)&&!v.length)?'':`<dt>${l}</dt><dd>${Array.isArray(v)?v.map(h).join(', '):v}</dd>`;
+const links=t=>{const l=String(t||'').split(/\s+/).map(safeUrl).filter(Boolean);return l.length?`<div class="refs">${l.map(u=>`<a href="${h(u)}" target="_blank" rel="noopener">${h(u.replace(/^https?:\/\/(www\.)?/,'').slice(0,60))}</a>`).join('')}</div>`:''};
+const styleMatch=(v,b)=>v===b||(v==='How-to'&&b==='Tutorial');
+
+function vTalent(){const U=S.ui.talent,cr=U.tab==='creators';
+  return`<header class="vh"><div><h1>Talent & crew</h1><p class="sub">Your saved creators, models, videographers and editors with rates, looks and past work. Pick them straight from the shoot planner.</p></div>
+  <div class="vh-act"><button class="btn" data-act="exportTalent">${ic('down')}Export CSV</button><button class="btn pri" data-act="${cr?'newCreator':'newCrew'}">${ic('plus')}${cr?'Add creator':'Add crew member'}</button></div></header>
+  <div class="seg rev-tabs" role="group" aria-label="Directory"><button data-act="tTab" data-k="creators" class="${cr?'on':''}">Creators & models (${S.creators.size})</button><button data-act="tTab" data-k="crew" class="${!cr?'on':''}">Videographers & crew (${S.crew.size})</button></div>
+  ${cr?creatorsList():crewList()}`}
+function tSelect(ch,val,opts,label){return`<select data-change="${ch}" aria-label="${label}">${opts.map(o=>{const[v,l]=Array.isArray(o)?o:[o,o];return`<option value="${h(v)}" ${val===v?'selected':''}>${h(l)}</option>`}).join('')}</select>`}
+function creatorsList(){const U=S.ui.talent,q=U.q.toLowerCase();
+  let l=[...S.creators.values()].filter(c=>(U.gender==='all'||c.gender===U.gender)&&(U.best==='all'||(c.bestFor||[]).includes(U.best))&&(U.cat==='all'||(c.categories||[]).includes(U.cat))&&(U.avail==='all'||(c.status||'available')===U.avail)&&(!q||creatorText(c).includes(q)));
+  const rk=c=>num(c.ratePerVideo)||num(c.rateDay)||1e12;
+  l.sort(U.sort==='rate'?(a,b)=>rk(a)-rk(b):U.sort==='rating'?(a,b)=>((ratingOf(b.id)||{}).avg||0)-((ratingOf(a.id)||{}).avg||0):U.sort==='shoots'?(a,b)=>personShoots(b.id).length-personShoots(a.id).length:U.sort==='new'?(a,b)=>(b.createdAt||0)-(a.createdAt||0):(a,b)=>String(a.name).localeCompare(b.name));
+  const bar=`<div class="toolbar">${tSelect('tGender',U.gender,[['all','All genders'],'Female','Male','Other'],'Gender')}${tSelect('tBest',U.best,[['all','Best for: any'],...BEST_FOR],'Best for')}${tSelect('tCat',U.cat,[['all','All categories'],...CATEGORIES],'Category')}${tSelect('tAvail',U.avail,[['all','Any availability'],...AVAIL],'Availability')}${tSelect('tSort',U.sort,[['name','Sort: name'],['rate','Lowest rate'],['rating','Highest rated'],['shoots','Most shoots'],['new','Recently added']],'Sort')}<span class="grow"></span><input type="search" id="talent-q" data-input="tSearch" placeholder="Name, city, skin tone, language" value="${h(U.q)}" aria-label="Search creators"></div>`;
+  if(!S.creators.size)return bar+`<div class="emptybig"><h3>No creators saved yet</h3><p>Add the models and UGC creators you work with, with their rates, looks and Instagram.</p><button class="btn pri" data-act="newCreator">Add creator</button></div>`;
+  return bar+(l.length?`<div class="tgrid">${l.map(creatorCard).join('')}</div>`:'<div class="emptybig"><h3>No creators match these filters</h3><p>Clear a filter or search for something else.</p></div>')}
+function creatorCard(c){const r=ratingOf(c.id),n=personShoots(c.id).length,ig=igUrl(c.handle);
+  return`<article class="tcard ${c.status==='dnb'?'dnb':''}"><button class="tphoto" data-act="viewCreator" data-id="${c.id}" aria-label="Open ${h(c.name)}">${photoEl(c)}</button>
+  <div class="tbody"><h3><button class="linkbtn plain" data-act="viewCreator" data-id="${c.id}">${h(c.name)}</button></h3>
+  <div class="tsub">${[c.gender,c.age?c.age+' yrs':'',c.location].filter(Boolean).map(h).join(', ')}</div>
+  ${ig?`<div><a class="ig" href="${h(ig)}" target="_blank" rel="noopener">${h(igHandle(c.handle))}</a>${c.followers?` <span class="muted" style="font-size:13px">${h(c.followers)} followers</span>`:''}</div>`:''}
+  <div class="chips">${(c.bestFor||[]).slice(0,4).map(x=>`<span class="tag">${h(x)}</span>`).join('')}${(c.bestFor||[]).length>4?`<span class="tag">+${c.bestFor.length-4}</span>`:''}</div>
+  ${creatorRates(c)?`<div class="rates">${creatorRates(c)}</div>`:''}
+  <div class="tfoot">${availChip(c.status)}${r?`<span>${starTxt(r)}</span>`:''}<span>${n} shoot${n===1?'':'s'}</span>${c.skinTone?`<span>${h(c.skinTone)} skin</span>`:''}</div></div></article>`}
+function crewList(){const U=S.ui.talent,q=U.q.toLowerCase();
+  let l=[...S.crew.values()].filter(c=>(U.role==='all'||c.role===U.role)&&(U.avail==='all'||(c.status||'available')===U.avail)&&(!q||[c.name,c.role,c.location,(c.skills||[]).join(' '),(c.equipment||[]).join(' '),c.notes].join(' ').toLowerCase().includes(q)));
+  l.sort(U.sort==='rate'?(a,b)=>(num(a.rateDay)||1e12)-(num(b.rateDay)||1e12):U.sort==='rating'?(a,b)=>((ratingOf(b.id)||{}).avg||0)-((ratingOf(a.id)||{}).avg||0):U.sort==='shoots'?(a,b)=>personShoots(b.id).length-personShoots(a.id).length:U.sort==='new'?(a,b)=>(b.createdAt||0)-(a.createdAt||0):(a,b)=>String(a.name).localeCompare(b.name));
+  const bar=`<div class="toolbar">${tSelect('tRole',U.role,[['all','All roles'],...CREW_ROLES],'Role')}${tSelect('tAvail',U.avail,[['all','Any availability'],...AVAIL],'Availability')}${tSelect('tSort',U.sort,[['name','Sort: name'],['rate','Lowest day rate'],['rating','Highest rated'],['shoots','Most shoots'],['new','Recently added']],'Sort')}<span class="grow"></span><input type="search" id="talent-q" data-input="tSearch" placeholder="Name, city, gear, skill" value="${h(U.q)}" aria-label="Search crew"></div>`;
+  if(!S.crew.size)return bar+`<div class="emptybig"><h3>No crew saved yet</h3><p>Add your videographers, editors, stylists and makeup artists with their day rates and gear.</p><button class="btn pri" data-act="newCrew">Add crew member</button></div>`;
+  return bar+(l.length?`<div class="tgrid">${l.map(c=>{const r=ratingOf(c.id),n=personShoots(c.id).length,ig=igUrl(c.handle);
+    return`<article class="tcard ${c.status==='dnb'?'dnb':''}"><button class="tphoto" data-act="viewCrew" data-id="${c.id}" aria-label="Open ${h(c.name)}">${photoEl(c)}</button>
+    <div class="tbody"><h3><button class="linkbtn plain" data-act="viewCrew" data-id="${c.id}">${h(c.name)}</button></h3><div class="tsub">${[c.role,c.location].filter(Boolean).map(h).join(', ')}</div>
+    ${ig?`<a class="ig" href="${h(ig)}" target="_blank" rel="noopener">${h(igHandle(c.handle))}</a>`:''}
+    <div class="chips">${(c.skills||[]).slice(0,4).map(x=>`<span class="tag">${h(x)}</span>`).join('')}</div>${crewRates(c)?`<div class="rates">${crewRates(c)}</div>`:''}
+    <div class="tfoot">${availChip(c.status)}${r?`<span>${starTxt(r)}</span>`:''}<span>${n} shoot${n===1?'':'s'}</span>${(c.equipment||[]).length?`<span>${c.equipment.length} gear items</span>`:''}</div></div></article>`}).join('')}</div>`:'<div class="emptybig"><h3>No crew match these filters</h3><p>Clear a filter or search for something else.</p></div>')}
+
+function photoField(p){return`<div class="full photo-prev"><div class="tphoto" id="photo-prev" style="width:84px">${photoEl(p)}</div><label class="fld" style="flex:1"><span>Photo <em>Google Drive link from the Creators & crew folder</em></span><input type="text" name="photoLink" value="${h(p.photoLink||'')}" data-input="photoPrev" placeholder="https://drive.google.com/file/d/…"></label></div>`}
+function openCreatorEditor(id){const c=id?clone(S.creators.get(id)):{name:'',gender:'Female',age:'',location:'',area:'',phone:'',email:'',handle:'',followers:'',status:'available',skinTone:'',skinType:'',height:'',size:'',hair:'',languages:['Hindi','English'],bestFor:[],categories:[],selfShoot:false,travel:false,portfolio:'',ratePerVideo:'',rateReel:'',rateHalfDay:'',rateDay:'',usage:'',upi:'',notes:''};
+  S.draft={kind:'talent',photo:c.photo||null,busy:0};
+  openModal(`<form data-form="creator" class="mform" data-id="${id||''}"><header><h2>${id?'Edit creator':'Add creator'}</h2><button type="button" class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header>
+  <div class="mbody grid3"><div class="sec">Profile</div>${photoField(c)}
+  ${fld('Full name',inp('name',c.name,'text','required maxlength="80"'))}${fld('Gender',sel('gender',['Female','Male','Other'],c.gender))}${fld('Age',inp('age',c.age,'number','min="1" max="99"'))}
+  ${fld('Instagram ID',inp('handle',c.handle,'text','placeholder="@username"'))}${fld('Followers',inp('followers',c.followers,'text','placeholder="12.4K"'))}${fld('Availability',sel('status',AVAIL,c.status))}
+  ${fld('City',inp('location',c.location,'text','placeholder="Mumbai"'))}${fld('Area',inp('area',c.area,'text','placeholder="Andheri West"'))}${fld('Phone / WhatsApp',inp('phone',c.phone,'tel'))}
+  ${fld('Email',inp('email',c.email,'text'))}
+  <div class="sec">Look</div>
+  ${fld('Skin tone',sel('skinTone',SKIN_TONES.map(x=>[x,x||'Not set']),c.skinTone))}${fld('Skin type',sel('skinType',SKIN_TYPES.map(x=>[x,x||'Not set']),c.skinType))}${fld('Height',inp('height',c.height,'text','placeholder="5\'6&quot; / 168 cm"'))}
+  ${fld('Clothing size',sel('size',SIZES.map(x=>[x,x||'Not set']),c.size))}${fld('Hair',sel('hair',HAIR.map(x=>[x,x||'Not set']),c.hair))}
+  ${fdiv('Languages (for voice-over & dialogue)',checks('languages',LANGS,c.languages),'full')}
+  <div class="sec">Work</div>
+  ${fdiv('Best for',checks('bestFor',BEST_FOR,c.bestFor),'full')}${fdiv('Categories',checks('categories',CATEGORIES,c.categories),'full')}
+  ${fdiv('Also',checks('flags',[['selfShoot','Can shoot UGC on own phone'],['travel','Travels for shoots']],[c.selfShoot?'selfShoot':'',c.travel?'travel':'']),'full')}
+  ${fld('Portfolio / sample links <em>one per line</em>',area('portfolio',c.portfolio,2),'full')}
+  <div class="sec">Rates (₹)</div>
+  ${fld('Per UGC / ad video',inp('ratePerVideo',c.ratePerVideo,'number','min="0"'))}${fld('Collab reel on their page',inp('rateReel',c.rateReel,'number','min="0"'))}${fld('Half day shoot',inp('rateHalfDay',c.rateHalfDay,'number','min="0"'))}
+  ${fld('Full day shoot',inp('rateDay',c.rateDay,'number','min="0"'))}${fld('Usage rights & terms',inp('usage',c.usage,'text','placeholder="3 months paid ads, raw files extra"'),'')}${fld('Payment (UPI / bank)',inp('upi',c.upi,'text'))}
+  ${fld('Internal notes',area('notes',c.notes,2,'placeholder="Great on camera, punctual, needs script 2 days before…"'),'full')}
+  </div><footer><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn pri" type="submit">${id?'Save creator':'Add creator'}</button></footer></form>`,true)}
+function openCrewEditor(id){const c=id?clone(S.crew.get(id)):{name:'',role:'Videographer',phone:'',email:'',handle:'',location:'',status:'available',skills:[],equipment:[],rateDay:'',rateHalfDay:'',ratePerVideo:'',turnaround:'',portfolio:'',upi:'',notes:''};
+  S.draft={kind:'talent',photo:c.photo||null,busy:0};
+  openModal(`<form data-form="crew" class="mform" data-id="${id||''}"><header><h2>${id?'Edit crew member':'Add crew member'}</h2><button type="button" class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header>
+  <div class="mbody grid3"><div class="sec">Profile</div>${photoField(c)}
+  ${fld('Full name',inp('name',c.name,'text','required maxlength="80"'))}${fld('Role',sel('role',CREW_ROLES,c.role))}${fld('Availability',sel('status',AVAIL,c.status))}
+  ${fld('Phone / WhatsApp',inp('phone',c.phone,'tel'))}${fld('Email',inp('email',c.email,'text'))}${fld('Instagram / portfolio ID',inp('handle',c.handle,'text','placeholder="@username"'))}
+  ${fld('City / area',inp('location',c.location,'text'))}
+  <div class="sec">Skills & gear</div>${fdiv('Good at',checks('skills',CREW_SKILLS,c.skills),'full')}${fdiv('Equipment they bring',checks('equipment',EQUIP,c.equipment),'full')}
+  ${fld('Portfolio / showreel links <em>one per line</em>',area('portfolio',c.portfolio,2),'full')}
+  <div class="sec">Rates (₹)</div>${fld('Full day',inp('rateDay',c.rateDay,'number','min="0"'))}${fld('Half day',inp('rateHalfDay',c.rateHalfDay,'number','min="0"'))}${fld('Per edited video',inp('ratePerVideo',c.ratePerVideo,'number','min="0"'))}
+  ${fld('Edit turnaround (days)',inp('turnaround',c.turnaround,'number','min="0"'))}${fld('Payment (UPI / bank)',inp('upi',c.upi,'text'))}
+  ${fld('Internal notes',area('notes',c.notes,2),'full')}
+  </div><footer><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn pri" type="submit">${id?'Save':'Add crew member'}</button></footer></form>`,true)}
+function contactBtns(p){const w=waUrl(p.phone),ig=igUrl(p.handle);return`<div class="vbtns" style="margin-top:8px">${p.phone?`<a class="btn sm" href="tel:${h(p.phone)}">Call ${h(p.phone)}</a>`:''}${w?`<a class="btn sm" href="${h(w)}" target="_blank" rel="noopener">WhatsApp</a>`:''}${ig?`<a class="btn sm" href="${h(ig)}" target="_blank" rel="noopener">Instagram</a>`:''}${p.email?`<a class="btn sm" href="mailto:${h(p.email)}">Email</a>`:''}</div>`}
+function historyTbl(id){const l=personShoots(id);return`<div><b style="font-family:var(--fd);font-size:16px">Shoot history (${l.length})</b>${l.length?`<div class="tblwrap"><table class="tbl" style="margin-top:6px"><thead><tr><th>Shoot</th><th>Date</th><th>Stage</th><th>Rating</th></tr></thead><tbody>${l.map(s=>`<tr><td><button class="linkbtn" data-act="openShoot" data-id="${s.id}">${h(s.title)}</button></td><td>${fmtD(s.shootDate)}</td><td><span class="chip s-${h(s.stage||'planning')}">${h((STAGES.find(x=>x[0]===s.stage)||STAGES[0])[1])}</span></td><td>${(s.ratings||{})[id]?'<span class="stars">'+'★'.repeat(s.ratings[id])+'</span>':'—'}</td></tr>`).join('')}</tbody></table></div>`:'<p class="empty">Not booked on any shoot yet.</p>'}</div>`}
+function openCreatorView(id){const c=S.creators.get(id);if(!c)return;const r=ratingOf(id);
+  openModal(`<div class="mform"><header><h2>${h(c.name)}</h2><button class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header><div class="mbody">
+  <div class="phead"><div class="tphoto">${photoEl(c)}</div><div><div class="tsub">${[c.gender,c.age?c.age+' yrs':'',[c.area,c.location].filter(Boolean).join(', ')].filter(Boolean).map(h).join(', ')}</div>
+  ${igUrl(c.handle)?`<a class="ig" href="${h(igUrl(c.handle))}" target="_blank" rel="noopener">${h(igHandle(c.handle))}</a>`:''}${c.followers?` <span class="muted">${h(c.followers)} followers</span>`:''}
+  <div style="margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${availChip(c.status)}${r?`<span>${starTxt(r)} from ${r.n} shoot${r.n>1?'s':''}</span>`:''}</div>${contactBtns(c)}</div></div>
+  <dl class="kv">${kv('Best for',c.bestFor)}${kv('Categories',c.categories)}${kv('Languages',c.languages)}${kv('Skin tone',h(c.skinTone))}${kv('Skin type',h(c.skinType))}${kv('Height',h(c.height))}${kv('Clothing size',h(c.size))}${kv('Hair',h(c.hair))}
+  ${kv('Self-shoot UGC',c.selfShoot?'Yes, on own phone':'')}${kv('Travel',c.travel?'Travels for shoots':'')}${kv('Per ad video',c.ratePerVideo?money(c.ratePerVideo):'')}${kv('Collab reel',c.rateReel?money(c.rateReel):'')}${kv('Half day',c.rateHalfDay?money(c.rateHalfDay):'')}${kv('Full day',c.rateDay?money(c.rateDay):'')}
+  ${kv('Usage & terms',h(c.usage))}${kv('Payment',h(c.upi))}${kv('Portfolio',links(c.portfolio))}${kv('Notes',h(c.notes))}</dl>${historyTbl(id)}</div>
+  <footer>${isAdmin()?`<button class="btn ghost danger" data-act="delCreator" data-id="${id}" style="margin-right:auto">${ic('trash',15)}Delete</button>`:''}<button class="btn" data-act="editCreator" data-id="${id}">${ic('edit',15)}Edit</button><button class="btn pri" data-act="shootWith" data-id="${id}" data-k="c">${ic('film',15)}Plan a shoot with ${h(first(c.name))}</button></footer></div>`,true)}
+function openCrewView(id){const c=S.crew.get(id);if(!c)return;const r=ratingOf(id);
+  openModal(`<div class="mform"><header><h2>${h(c.name)}</h2><button class="x" data-act="closeModal" aria-label="Close">${ic('x')}</button></header><div class="mbody">
+  <div class="phead"><div class="tphoto">${photoEl(c)}</div><div><div class="tsub">${[c.role,c.location].filter(Boolean).map(h).join(', ')}</div>${igUrl(c.handle)?`<a class="ig" href="${h(igUrl(c.handle))}" target="_blank" rel="noopener">${h(igHandle(c.handle))}</a>`:''}
+  <div style="margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${availChip(c.status)}${r?`<span>${starTxt(r)} from ${r.n} shoot${r.n>1?'s':''}</span>`:''}</div>${contactBtns(c)}</div></div>
+  <dl class="kv">${kv('Good at',c.skills)}${kv('Equipment',c.equipment)}${kv('Full day',c.rateDay?money(c.rateDay):'')}${kv('Half day',c.rateHalfDay?money(c.rateHalfDay):'')}${kv('Per edited video',c.ratePerVideo?money(c.ratePerVideo):'')}${kv('Edit turnaround',c.turnaround?h(c.turnaround)+' days':'')}${kv('Payment',h(c.upi))}${kv('Portfolio',links(c.portfolio))}${kv('Notes',h(c.notes))}</dl>${historyTbl(id)}</div>
+  <footer>${isAdmin()?`<button class="btn ghost danger" data-act="delCrew" data-id="${id}" style="margin-right:auto">${ic('trash',15)}Delete</button>`:''}<button class="btn" data-act="editCrew" data-id="${id}">${ic('edit',15)}Edit</button>${['Videographer','Editor'].includes(c.role)?`<button class="btn pri" data-act="shootWith" data-id="${id}" data-k="${c.role==='Editor'?'e':'v'}">${ic('film',15)}Plan a shoot with ${h(first(c.name))}</button>`:''}</footer></div>`,true)}
+
+/* ---- shoot editor talent section ---- */
+const crewOpts=(role,cur,blank)=>[['',blank],...[...S.crew.values()].filter(c=>c.role===role&&(c.status!=='dnb'||c.id===cur)).sort((a,b)=>String(a.name).localeCompare(b.name)).map(c=>[c.id,`${c.name}${c.location?' ('+c.location+')':''}${c.rateDay?', '+money(c.rateDay)+'/day':''}`])];
+function talentSection(s){const cs=[...S.creators.values()].sort((a,b)=>String(a.name).localeCompare(b.name));const other=[...S.crew.values()].filter(c=>!['Videographer','Editor'].includes(c.role)).sort((a,b)=>String(a.name).localeCompare(b.name));
+  const legacy=[s.videographer&&!s.videographerId?'videographer "'+s.videographer+'"':'',s.model&&!(s.creatorIds||[]).length?'model "'+s.model+'"':''].filter(Boolean);
+  return`<div class="sec">Crew & talent <button type="button" class="linkbtn" style="font:600 13px var(--fb);margin-left:auto" data-act="goTalent">Manage directory</button></div>
+  ${legacy.length?`<p class="note full">Typed earlier: ${h(legacy.join(', '))}. Choose them from the directory to link their profile.</p>`:''}
+  ${fld('Talent needed',sel('modelGender',GENDERS,s.modelGender,'data-change="pickRefresh"'))}
+  ${fld('Videographer <em id="vg-note"></em>',sel('videographerId',crewOpts('Videographer',s.videographerId,S.crew.size?'Choose videographer':'None saved yet'),s.videographerId,'data-change="pickRefresh"'))}
+  ${fld('Editor',sel('editorId',crewOpts('Editor',s.editorId,'Choose editor'),s.editorId))}
+  <div class="fld full"><span>Creators / models <em id="pick-count"></em></span>
+    ${cs.length?`<div class="cin"><input type="search" id="pick-q" data-input="pickFilter" placeholder="Search name, city, skin tone, language" aria-label="Search creators"><label class="drivechk" style="white-space:nowrap"><input type="checkbox" id="pick-all" data-change="pickRefresh">Show everyone</label></div>
+    <div class="picklist" id="pick-list">${cs.map(c=>`<label class="pick" data-id="${c.id}"><input type="checkbox" name="creatorIds" value="${c.id}" ${(s.creatorIds||[]).includes(c.id)?'checked':''} data-change="pickRefresh"><span class="pk"><span class="pav">${photoEl(c)}</span><span class="pkt"><b>${h(c.name)}</b><small>${[c.gender,c.age?c.age+' yrs':'',c.location,c.skinTone].filter(Boolean).map(h).join(', ')}</small>${creatorRates(c)?`<small>${creatorRates(c)}</small>`:''}<small class="mt"></small><small class="bk"></small></span></span></label>`).join('')}</div><p class="note" id="pick-empty" hidden>No saved creators match. Tick "Show everyone" or change "Talent needed".</p>`
+    :`<p class="note">No creators saved yet. Add them in Talent & crew, then pick them here.</p>`}</div>
+  ${other.length?fdiv('Other crew',checks('crewIds',other.map(c=>[c.id,`${c.name} (${c.role})`]),s.crewIds||[]),'full'):''}
+  ${fld('Crew notes',inp('crew',s.crew,'text','placeholder="Helper, extra crew not in the directory"'),'full')}
+  <div class="full ratebox" id="pick-sum"></div>`}
+function pickRefresh(){const f=$('#modal form[data-form=shoot]');if(!f)return;
+  const g=f.elements.modelGender.value,q=(($('#pick-q')||{}).value||'').toLowerCase(),all=($('#pick-all')||{}).checked,date=f.elements.shootDate.value,sid=f.dataset.id;
+  const vt=[...f.querySelectorAll('input[name=videoTypes]:checked')].map(x=>x.value);let vis=0,sel=[];
+  f.querySelectorAll('.pick').forEach(el=>{const c=S.creators.get(el.dataset.id);if(!c)return;const on=el.querySelector('input').checked;let show=true;
+    if(!all){if(g==='Female'||g==='Male')show=c.gender===g;else if(g==='Kids')show=!!num(c.age)&&num(c.age)<16;else if(g==='Not needed')show=false;if(c.status==='dnb')show=false}
+    if(q&&!creatorText(c).includes(q))show=false;if(on){show=true;sel.push(c)}el.hidden=!show;if(show)vis++;
+    const b=bookedOn(c.id,date,sid),m=(c.bestFor||[]).filter(x=>vt.some(v=>styleMatch(v,x)));
+    el.querySelector('.bk').textContent=b?`Booked on "${b.title}" that day`:c.status==='busy'?'Marked busy':c.status==='dnb'?'Do not book':'';
+    el.querySelector('.mt').textContent=m.length?'Good for '+m.join(', '):''});
+  const pe=$('#pick-empty');if(pe)pe.hidden=vis>0;const pc=$('#pick-count');if(pc)pc.textContent=sel.length?sel.length+' selected':'tick one or more';
+  const vg=S.crew.get(f.elements.videographerId.value),vn=$('#vg-note'),vb=vg&&bookedOn(vg.id,date,sid);if(vn){vn.textContent=vb?`booked on "${vb.title}" that day`:'';vn.style.color='var(--bad)'}
+  const n=num(f.elements.numVideos.value),cf=sel.reduce((t,c)=>t+(num(c.ratePerVideo)&&n?num(c.ratePerVideo)*n:num(c.rateDay)),0),vf=vg?num(vg.rateDay)||num(vg.rateHalfDay):0;
+  const box=$('#pick-sum');if(box)box.innerHTML=sel.length||vg?`<b>From saved rates:</b> ${sel.map(c=>`${h(c.name)} ${creatorRates(c)||'no rate saved'}`).join('; ')}${vg?`${sel.length?'; ':''}${h(vg.name)} ${crewRates(vg)||'no rate saved'}`:''}.<br>Suggested fees: creators ${money(cf)}${n?` (${n} videos)`:''}, videographer ${money(vf)}. <button type="button" class="linkbtn" data-act="useRates" data-cf="${cf}" data-vf="${vf}">Use these fees</button>`:''}
+function talentBlock(s){const rows=[],rateable=stageIdx(s.stage||'planning')>=2;
+  const row=(p,kind,label)=>{const act=kind==='c'?'viewCreator':'viewCrew',r=(s.ratings||{})[p.id]||0,ig=igUrl(p.handle),w=waUrl(p.phone);
+    return`<div class="prow"><span class="pav">${photoEl(p)}</span><div class="pinfo"><button class="linkbtn plain" data-act="${act}" data-id="${p.id}">${h(p.name)}</button><small>${h(label)}${p.phone?`, <a href="tel:${h(p.phone)}">${h(p.phone)}</a>`:''}${w?`, <a href="${h(w)}" target="_blank" rel="noopener">WhatsApp</a>`:''}${ig?`, <a href="${h(ig)}" target="_blank" rel="noopener">${h(igHandle(p.handle))}</a>`:''}</small></div>
+    ${rateable?`<div class="rate" role="group" aria-label="Rate ${h(p.name)}">${[1,2,3,4,5].map(n=>`<button data-act="rate" data-sid="${s.id}" data-pid="${p.id}" data-n="${n}" class="${n<=r?'on':''}" aria-label="${n} star${n>1?'s':''}">★</button>`).join('')}</div>`:''}</div>`};
+  const vg=S.crew.get(s.videographerId),ed=S.crew.get(s.editorId);
+  if(vg)rows.push(row(vg,'v','Videographer'));else if(s.videographer)rows.push(`<div class="prow"><span class="pav">${h(initials(s.videographer))}</span><div class="pinfo"><b>${h(s.videographer)}</b><small>Videographer${s.videographerPhone?', '+h(s.videographerPhone):''}</small></div></div>`);
+  creatorsOf(s).forEach(c=>rows.push(row(c,'c',[c.gender,c.age?c.age+' yrs':'','creator'].filter(Boolean).join(', '))));
+  if(!(s.creatorIds||[]).length&&s.model)rows.push(`<div class="prow"><span class="pav">${h(initials(s.model))}</span><div class="pinfo"><b>${h(s.model)}</b><small>Model${s.modelPhone?', '+h(s.modelPhone):''}</small></div></div>`);
+  if(ed)rows.push(row(ed,'v','Editor'));
+  (s.crewIds||[]).map(id=>S.crew.get(id)).filter(Boolean).forEach(c=>rows.push(row(c,'v',c.role)));
+  return`<div style="margin-bottom:10px">${rows.join('')||`<p class="empty">No crew or talent chosen yet. <button class="linkbtn" data-act="editShoot" data-id="${s.id}">Choose from directory</button></p>`}${rows.length&&rateable?'<p class="note" style="margin-top:4px">Rate each person after the shoot. Ratings show up in the directory.</p>':''}</div>`}
+
+async function saveTalent(col,f,label){
+  const o=formObj(f),id=f.dataset.id,prev=id?(col==='creators'?S.creators:S.crew).get(id):null;
+  const p={...(prev?clone(prev):{createdBy:S.me.id,createdAt:Date.now()}),...o,handle:igHandle(o.handle)};
+  ['age','ratePerVideo','rateReel','rateHalfDay','rateDay','turnaround'].forEach(k=>{if(k in o)p[k]=o[k]===''?'':num(o[k])});
+  if(col==='creators'){p.selfShoot=(o.flags||[]).includes('selfShoot');p.travel=(o.flags||[]).includes('travel');delete p.flags}
+  await save(col,id||uid(),p);logAct(`${id?'updated':'added'} ${label} ${p.name}`);closeModal();render(true);toast(`${p.name} ${id?'saved':'added'}`,'ok')}
+
+Object.assign(A,{
+  tTab:el=>{S.ui.talent.tab=el.dataset.k;S.ui.talent.q='';S.ui.talent.avail='all';render(true)},
+  goTalent:()=>{closeModal();go('talent')},
+  newCreator:()=>openCreatorEditor(null),newCrew:()=>openCrewEditor(null),
+  editCreator:el=>{closeModal();openCreatorEditor(el.dataset.id)},editCrew:el=>{closeModal();openCrewEditor(el.dataset.id)},
+  viewCreator:el=>openCreatorView(el.dataset.id),viewCrew:el=>openCrewView(el.dataset.id),
+  delCreator:el=>{const c=S.creators.get(el.dataset.id),n=personShoots(c.id).length;confirmBox(`Delete ${c.name}?`,n?`They are linked to ${n} shoot${n>1?'s':''}. Those shoots will no longer show their name.`:'Their profile is removed for everyone.','Delete',async()=>{await remove('creators',c.id);logAct(`deleted creator ${c.name}`);render(true)})},
+  delCrew:el=>{const c=S.crew.get(el.dataset.id),n=personShoots(c.id).length;confirmBox(`Delete ${c.name}?`,n?`They are linked to ${n} shoot${n>1?'s':''}. Those shoots will no longer show their name.`:'Their profile is removed for everyone.','Delete',async()=>{await remove('crew',c.id);logAct(`deleted crew member ${c.name}`);render(true)})},
+  shootWith:el=>{const k=el.dataset.k,id=el.dataset.id;closeModal();openShootEditor(null,k==='c'?{creatorIds:[id]}:k==='e'?{editorId:id}:{videographerId:id})},
+  rmPhoto:()=>{if(S.draft){S.draft.photo=null;const p=$('#photo-prev');if(p)p.innerHTML='?'}},
+  useRates:el=>{const f=$('#modal form[data-form=shoot]');if(!f)return;if(num(el.dataset.cf))f.elements.creatorFee.value=el.dataset.cf;if(num(el.dataset.vf))f.elements.videographerFee.value=el.dataset.vf;toast('Fees filled in from saved rates')},
+  rate:el=>updShoot(el.dataset.sid,s=>{s.ratings=s.ratings||{};const n=+el.dataset.n;s.ratings[el.dataset.pid]=s.ratings[el.dataset.pid]===n?0:n}),
+  exportTalent:async()=>{if(S.ui.talent.tab==='creators'){const rows=[['Name','Gender','Age','Instagram','Followers','City','Area','Phone','Email','Skin tone','Skin type','Height','Size','Hair','Languages','Best for','Categories','Self-shoot UGC','Travels','Per video','Collab reel','Half day','Full day','Usage & terms','Payment','Availability','Avg rating','Shoots','Notes']];
+      [...S.creators.values()].forEach(c=>{const r=ratingOf(c.id);rows.push([c.name,c.gender,c.age,c.handle,c.followers,c.location,c.area,c.phone,c.email,c.skinTone,c.skinType,c.height,c.size,c.hair,(c.languages||[]).join('; '),(c.bestFor||[]).join('; '),(c.categories||[]).join('; '),c.selfShoot?'Yes':'No',c.travel?'Yes':'No',c.ratePerVideo,c.rateReel,c.rateHalfDay,c.rateDay,c.usage,c.upi,(AVAIL.find(x=>x[0]===c.status)||AVAIL[0])[1],r?r.avg.toFixed(1):'',personShoots(c.id).length,c.notes])});
+      await saveFile(`creators_${today()}.csv`,csv(rows))}
+    else{const rows=[['Name','Role','City','Phone','Email','Instagram','Good at','Equipment','Full day','Half day','Per edit','Turnaround days','Payment','Availability','Avg rating','Shoots','Notes']];
+      [...S.crew.values()].forEach(c=>{const r=ratingOf(c.id);rows.push([c.name,c.role,c.location,c.phone,c.email,c.handle,(c.skills||[]).join('; '),(c.equipment||[]).join('; '),c.rateDay,c.rateHalfDay,c.ratePerVideo,c.turnaround,c.upi,(AVAIL.find(x=>x[0]===c.status)||AVAIL[0])[1],r?r.avg.toFixed(1):'',personShoots(c.id).length,c.notes])});
+      await saveFile(`crew_${today()}.csv`,csv(rows))}}
+});
+Object.assign(C,{
+  tGender:el=>{S.ui.talent.gender=el.value;render(true)},tBest:el=>{S.ui.talent.best=el.value;render(true)},tCat:el=>{S.ui.talent.cat=el.value;render(true)},
+  tAvail:el=>{S.ui.talent.avail=el.value;render(true)},tSort:el=>{S.ui.talent.sort=el.value;render(true)},tRole:el=>{S.ui.talent.role=el.value;render(true)},
+  pickRefresh:()=>pickRefresh()
+});
+Object.assign(IN,{
+  tSearch:el=>{S.ui.talent.q=el.value;clearTimeout(S.qt);S.qt=setTimeout(()=>render(true),200)},
+  pickFilter:()=>pickRefresh(),
+  photoPrev:el=>{const p=$('#photo-prev');if(p)p.innerHTML=photoEl({name:'?',photoLink:el.value.trim()})}
+});
+Object.assign(F,{creator:f=>saveTalent('creators',f,'creator'),crew:f=>saveTalent('crew',f,'crew member')});
+document.addEventListener('change',e=>{if(e.target.closest&&e.target.closest('#modal form[data-form=shoot]'))pickRefresh()});
+document.addEventListener('input',e=>{if(e.target.name==='numVideos'&&e.target.closest('#modal form[data-form=shoot]'))pickRefresh()});
+
+/* ================= events wiring ================= */
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const fn=A[el.dataset.act];if(!fn)return;if(el.tagName!=='LABEL')e.preventDefault();Promise.resolve(fn(el,e)).catch(err=>{console.error(err)})});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal').hidden){closeModal();return}
+  if(e.key==='Enter'&&e.target.id==='draft-link'){e.preventDefault();A.addDraftLink();return}
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches('.cell.pc')){e.preventDefault();A.goPostsDate(e.target)}});
+document.addEventListener('change',e=>{const el=e.target.closest('[data-change]');if(el&&C[el.dataset.change])Promise.resolve(C[el.dataset.change](el,e)).catch(err=>console.error(err))});
+document.addEventListener('input',e=>{const el=e.target.closest('[data-input]');if(el&&IN[el.dataset.input])IN[el.dataset.input](el,e)});
+document.addEventListener('submit',e=>{const f=e.target.closest('[data-form]');if(!f)return;e.preventDefault();const b=f.querySelector('[type=submit]');if(b)b.disabled=true;
+  Promise.resolve(F[f.dataset.form](f)).catch(err=>console.error(err)).finally(()=>{if(b&&b.isConnected)b.disabled=false})});
+
+/* ================= boot ================= */
+async function boot(){
+  render();
+  const c=window.FIREBASE_CONFIG;
+  if(!c||!c.apiKey){S.mode='local';const me={id:'local',name:'Preview admin',email:'preview@local',role:'admin',canApprove:true,active:true};
+    S.team={users:[me]};S.me=me;S.meDoc=me;S.loaded={settings:true,team:true,me:true};S.booted=true;render(true);return}
+  S.app=FB.initializeApp(c);S.auth=FB.getAuth(S.app);
+  try{S.fs=FB.initializeFirestore(S.app,{localCache:FB.persistentLocalCache({tabManager:FB.persistentMultipleTabManager()})})}catch(e){S.fs=FB.getFirestore(S.app)}
+  S.mode='live';
+  FB.onSnapshot(FB.doc(S.fs,'config','meta'),s=>{S.meta=s.exists()?s.data():null;S.metaLoaded=true;scheduleRender()},()=>{S.meta={};S.metaLoaded=true;scheduleRender()});
+  FB.onAuthStateChanged(S.auth,u=>{S.authUser=u;S.authLoaded=true;if(u)subscribeMe(u);else{if(S.meUnsub){S.meUnsub();S.meUnsub=null}unsubAll();resetData()}S.screen=null;render(true)});
+  window.addEventListener('online',()=>{if(S.mode==='error'){S.mode='live';scheduleRender()}});
+  S.booted=true;render(true);
+}
+boot();
+</script>
+</body>
+</html>
